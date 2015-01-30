@@ -1,9 +1,9 @@
-## Sensu-Plugins-Processes
+## Sensu-Plugins-Process-Checks
 
-[![Build Status](https://travis-ci.org/sensu-plugins/sensu-plugins-processes.svg?branch=master)](https://travis-ci.org/sensu-plugins/sensu-plugins-processes)
-[![Gem Version](https://badge.fury.io/rb/sensu-plugins-processes.svg)](http://badge.fury.io/rb/sensu-plugins-processes)
-[![Code Climate](https://codeclimate.com/github/sensu-plugins/sensu-plugins-processes/badges/gpa.svg)](https://codeclimate.com/github/sensu-plugins/sensu-plugins-processes)
-[![Test Coverage](https://codeclimate.com/github/sensu-plugins/sensu-plugins-processes/badges/coverage.svg)](https://codeclimate.com/github/sensu-plugins/sensu-plugins-processes)
+[![Build Status](https://travis-ci.org/sensu-plugins/sensu-plugins-process-checks.svg?branch=master)](https://travis-ci.org/sensu-plugins/sensu-plugins-process-checks)
+[![Gem Version](https://badge.fury.io/rb/sensu-plugins-process-checks.svg)](http://badge.fury.io/rb/sensu-plugins-process-checks)
+[![Code Climate](https://codeclimate.com/github/sensu-plugins/sensu-plugins-process-checks/badges/gpa.svg)](https://codeclimate.com/github/sensu-plugins/sensu-plugins-process-checks)
+[![Test Coverage](https://codeclimate.com/github/sensu-plugins/sensu-plugins-process-checks/badges/coverage.svg)](https://codeclimate.com/github/sensu-plugins/sensu-plugins-process-checks)
 
 ## Functionality
 
@@ -28,8 +28,8 @@ gem install <gem> -P MediumSecurity
 
 You can also download the key from /certs/ within each repository.
 
-`gem install sensu-plugins-processes`
+`gem install sensu-plugins-process-checks`
 
-Add *sensu-plugins-processes* to your Gemfile, manifest, cookbook, etc
+Add *sensu-plugins-process-checks* to your Gemfile, manifest, cookbook, etc
 
 ## Notes

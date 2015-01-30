@@ -3,19 +3,19 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'date'
 
 if RUBY_VERSION < '2.0.0'
-  require 'sensu-plugins-processes'
+  require 'sensu-plugins-process-checks'
 else
- require_relative 'lib/sensu-plugins-processes'
+ require_relative 'lib/sensu-plugins-process-checks'
 end
 
 pvt_key = '~/.ssh/gem-private_key.pem'
 
 Gem::Specification.new do |s|
-  s.name             = 'sensu-plugins-processes'
-  s.version          = SensuPluginsProcesses::VERSION
+  s.name             = 'sensu-plugins-process-checks'
+  s.version          = SensuPluginsProcessChecks::VERSION
   s.authors          = ['Sonian, Inc. and contributors']
   s.email            = '<sensu-users@googlegroups.com>'
-  s.homepage         = 'https://github.com/sensu-plugins/sensu-plugins-processes'
+  s.homepage         = 'https://github.com/sensu-plugins/sensu-plugins-process-checks'
   s.summary          = 'Sensu process checks'
   s.description      = 'Sensu process checks'
   s.license          = 'MIT'
