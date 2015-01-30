@@ -28,7 +28,7 @@ Gem::Specification.new do |s|
   s.signing_key      = File.expand_path(pvt_key) if $PROGRAM_NAME =~ /gem\z/
   s.platform         = Gem::Platform::RUBY
 
-  s.add_runtime_dependency 'English',           '0.6.3'
+  s.add_runtime_dependency 'english',           '0.6.3'
   s.add_runtime_dependency 'sensu-plugin',      '1.1.0'
   s.add_runtime_dependency 'json',              '1.8.2'
 
