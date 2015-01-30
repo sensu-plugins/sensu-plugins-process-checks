@@ -1,6 +1,6 @@
 #! /usr/bin/env ruby
 #
-# check-procs
+# check-process
 #
 # DESCRIPTION:
 #   Finds processes matching various filters (name, state, etc). Will not
@@ -43,7 +43,7 @@ require 'English'
 #
 # Check Processes
 #
-class CheckProcs < Sensu::Plugin::Check::CLI
+class CheckProcess < Sensu::Plugin::Check::CLI
   option :warn_over,
          short: '-w N',
          long: '--warn-over N',

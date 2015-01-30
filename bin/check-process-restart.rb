@@ -52,6 +52,7 @@ class CheckProcessRestart < Sensu::Plugin::Check::CLI
          description: 'the number of processes to need restart before critical',
          default: 2
 
+  # Debian command to run
   CHECK_RESTART = '/usr/sbin/checkrestart'
 
   # Set path for the checkrestart script

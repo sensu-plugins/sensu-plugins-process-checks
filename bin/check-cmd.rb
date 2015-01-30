@@ -31,7 +31,7 @@ require 'english'
 #
 # Check Command Status
 #
-class CheckCMDStatus < Sensu::Plugin::Check::CLI
+class CheckCmdStatus < Sensu::Plugin::Check::CLI
   option :command,
          description: 'command to run (might need quotes)',
          short: '-c',
@@ -49,8 +49,8 @@ class CheckCMDStatus < Sensu::Plugin::Check::CLI
          short: '-o',
          long: '--check_output REGEX'
 
-  # Acquire the exit code of a command and alert if the exit code
-  # is not what is expected
+  # Acquire the exit code and/or output of a command and alert if it is not
+  # what is expected.
   #
   def acquire_cmd_status
     stdout = `#{config[:command]}`

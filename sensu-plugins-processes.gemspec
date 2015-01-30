@@ -2,11 +2,11 @@ lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'date'
 
-#if RUBY_VERSION < '2.0.0'
+if RUBY_VERSION < '2.0.0'
   require 'sensu-plugins-processes'
-#else
-#  require_relative 'lib/sensu-plugins-processes'
-#end
+else
+ require_relative 'lib/sensu-plugins-processes'
+end
 
 pvt_key = '~/.ssh/gem-private_key.pem'
 
