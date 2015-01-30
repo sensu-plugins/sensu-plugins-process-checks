@@ -1,17 +1,36 @@
-#!/usr/bin/env ruby
+#! /usr/bin/env ruby
 #
-# Generic check raising an error if exit code of command is not N.
-# ===
+# check-cmd
 #
-# Jean-Francois Theroux <failshell@gmail.com>
+# DESCRIPTION:
+#   Generic check raising an error if exit code of command is not N.
 #
-# Released under the same terms as Sensu (the MIT license); see LICENSE
-# for details.
+# OUTPUT:
+#   plain text
+#
+# PLATFORMS:
+#   Linux
+#
+# DEPENDENCIES:
+#   gem: sensu-plugin
+#   gem: english
+#
+# USAGE:
+#
+# NOTES:
+#
+# LICENSE:
+#   Jean-Francois Theroux <failshell@gmail.com>
+#   Released under the same terms as Sensu (the MIT license); see LICENSE
+#   for details.
+#
 
-require 'rubygems' if RUBY_VERSION < '1.9.0'
 require 'sensu-plugin/check/cli'
-require 'English'
+require 'english'
 
+#
+# Check Command Status
+#
 class CheckCMDStatus < Sensu::Plugin::Check::CLI
   option :command,
          description: 'command to run (might need quotes)',
@@ -30,6 +49,9 @@ class CheckCMDStatus < Sensu::Plugin::Check::CLI
          short: '-o',
          long: '--check_output REGEX'
 
+  # Acquire the exit code of a command and alert if the exit code
+  # is not what is expected
+  #
   def acquire_cmd_status
     stdout = `#{config[:command]}`
     # #YELLOW
@@ -48,6 +70,8 @@ class CheckCMDStatus < Sensu::Plugin::Check::CLI
     end
   end
 
+  # main function
+  #
   def run
     acquire_cmd_status
   end

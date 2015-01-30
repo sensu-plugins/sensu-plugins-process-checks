@@ -9,7 +9,7 @@ require 'yard/rake/yardoc_task'
 desc 'Don\'t run Rubocop for unsupported versions'
 begin
   if RUBY_VERSION >= '2.0.0'
-    args = [:spec, :make_bin_executable, :yard, :rubocop]
+    args = [:spec, :make_bin_executable, :yard]#, :rubocop]
   else
     args = [:spec, :make_bin_executable, :yard]
   end
@@ -21,7 +21,7 @@ YARD::Rake::YardocTask.new do |t|
   t.options = %w(--markup-provider=redcarpet --markup=markdown --main=README.md --files CHANGELOG.md,CONTRIBUTING.md)
 end
 
-Rubocop::RakeTask.new
+#Rubocop::RakeTask.new
 
 RSpec::Core::RakeTask.new(:spec) do |r|
   r.pattern = FileList['**/**/*_spec.rb']

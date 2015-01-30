@@ -1,34 +1,48 @@
-#!/usr/bin/env ruby
+#! /usr/bin/env ruby
 #
-# Check Procs
-# ===
+# check-procs
 #
-# Finds processes matching various filters (name, state, etc). Will not
-# match itself by default. The number of processes found will be tested
-# against the Warning/critical thresholds. By default, fails with a
-# CRITICAL if more than one process matches -- you must specify values
-# for -w and -c to override this.
+# DESCRIPTION:
+#   Finds processes matching various filters (name, state, etc). Will not
+#   match itself by default. The number of processes found will be tested
+#   against the Warning/critical thresholds. By default, fails with a
+#   CRITICAL if more than one process matches -- you must specify values
+#   for -w and -c to override this.
 #
-# Attempts to work on Cygwin (where ps does not have the features we
-# need) by calling Windows' tasklist.exe, but this is not well tested.
+#   Attempts to work on Cygwin (where ps does not have the features we
+#   need) by calling Windows' tasklist.exe, but this is not well tested.#
+#
+# OUTPUT:
+#   plain text
+#
+# PLATFORMS:
+#   Linux
+#
+# DEPENDENCIES:
+#   gem: sensu-plugin
+#   gem: english
 #
 # USAGE:
-#
 #   # chef-client is running
 #   check-procs -p chef-client -W 1
 #
 #   # there are not too many zombies
 #   check-procs -s Z -w 5 -c 10
 #
-# Copyright 2011 Sonian, Inc <chefs@sonian.net>
+# NOTES:
 #
-# Released under the same terms as Sensu (the MIT license); see LICENSE
-# for details.
+# LICENSE:
+#   Copyright 2011 Sonian, Inc <chefs@sonian.net>
+#   Released under the same terms as Sensu (the MIT license); see LICENSE
+#   for details.
+#
 
-require 'rubygems' if RUBY_VERSION < '1.9.0'
 require 'sensu-plugin/check/cli'
 require 'English'
 
+#
+# Check Processes
+#
 class CheckProcs < Sensu::Plugin::Check::CLI
   option :warn_over,
          short: '-w N',
@@ -146,6 +160,8 @@ class CheckProcs < Sensu::Plugin::Check::CLI
          proc: proc(&:to_i),
          description: 'Match processes cpu time that is younger than this, in SECONDS'
 
+  # Read the pid file
+  # @param path [String] the path to the pid file, including the file
   def read_pid(path)
     if File.exist?(path)
       File.read(path).strip.to_i
@@ -154,21 +170,32 @@ class CheckProcs < Sensu::Plugin::Check::CLI
     end
   end
 
+  # read the output of a command
+  # @param cmd [String] the command to read the output from
   def read_lines(cmd)
     IO.popen(cmd + ' 2>&1') do |child|
       child.read.split("\n")
     end
   end
 
+  # create a hash from the output of each line of a command
+  # @param line [String]
+  # @param cols
+  #
   def line_to_hash(line, *cols)
     Hash[cols.zip(line.strip.split(/\s+/, cols.size))]
   end
 
+  # Is this running on cygwin
+  #
+  #
   def on_cygwin?
     # #YELLOW
     `ps -W 2>&1`; $CHILD_STATUS.exitstatus == 0 # rubocop:disable Semicolon
   end
 
+  # Acquire all the proceeses on a system for further analysis
+  #
   def acquire_procs
     if on_cygwin?
       read_lines('ps -aWl').drop(1).map do |line|
@@ -188,16 +215,22 @@ class CheckProcs < Sensu::Plugin::Check::CLI
     end
   end
 
+  # Match to a time
+  #
   def etime_to_esec(etime)
     m = /(\d+-)?(\d\d:)?(\d\d):(\d\d)/.match(etime)
     (m[1] || 0).to_i * 86_400 + (m[2] || 0).to_i * 3600 + (m[3] || 0).to_i * 60 + (m[4] || 0).to_i
   end
 
+  # Match to a time
+  #
   def cputime_to_csec(time)
     m = /(\d+-)?(\d\d:)?(\d\d):(\d\d)/.match(time)
     (m[1] || 0).to_i * 86_400 + (m[2] || 0).to_i * 3600 + (m[3] || 0).to_i * 60 + (m[4] || 0).to_i
   end
 
+  # The main function
+  #
   def run
     procs = acquire_procs
 

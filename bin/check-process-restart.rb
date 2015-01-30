@@ -19,6 +19,7 @@
 #   gem: sensu-plugin
 #   gem: json
 #   deb: debian-goodies
+#   gem: english
 #
 # USAGE:
 #   check-process-restart.rb # Uses defaults
@@ -37,34 +38,37 @@
 
 require 'sensu-plugin/check/cli'
 require 'json'
-require 'rubygems' if RUBY_VERSION < '1.9.0'
 require 'English'
 
 # Use to see if any processes require a restart
 class CheckProcessRestart < Sensu::Plugin::Check::CLI
   option :warn,
          short: '-w WARN',
+         description: 'the number of processes to need restart before warn',
          default: 1
 
   option :crit,
          short: '-c CRIT',
+         description: 'the number of processes to need restart before critical',
          default: 2
 
   CHECK_RESTART = '/usr/sbin/checkrestart'
 
   # Set path for the checkrestart script
+  #
   def initialize
     super
   end
 
   # Check if we can run checkrestart script
-  # Return: Boolean
+  # @return [Boolean]
+  #
   def checkrestart?
     File.exist?('/etc/debian_version') && File.exist?(CHECK_RESTART)
   end
 
   # Run checkrestart and parse process(es) and pid(s)
-  # Return: Hash
+  # @return [Hash]
   def run_checkrestart
     checkrestart_hash = { found: '', pids: [] }
 
@@ -88,6 +92,7 @@ class CheckProcessRestart < Sensu::Plugin::Check::CLI
   end
 
   # Main run method for the check
+  #
   def run
     unless checkrestart?
       unknown "Can't seem to find checkrestart. This check only works in a Debian based distribution and you need debian-goodies package installed"
