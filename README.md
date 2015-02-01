@@ -18,7 +18,6 @@
 
 ## Installation
 
-
 Add the public key (if you haven’t already) as a trusted certificate
 
 ```
