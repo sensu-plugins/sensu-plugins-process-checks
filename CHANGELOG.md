@@ -14,3 +14,8 @@
 * update README
 * add required Ruby version *>= 1.9.3*
 * add test/spec_help.rb
+
+#### 0.0.1-alpha.3
+
+* add proc-status-metrics
+* change proc-status-metrics to process-status-metrics
