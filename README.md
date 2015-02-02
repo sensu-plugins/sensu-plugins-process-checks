@@ -7,9 +7,9 @@
 
 ## Functionality
 
-*check-processs* and *check-process-restart*  will check processes on a system and alert if specific conditions exist based upon a set of filters that each has implemented.
+**check-processs** and **check-process-restart**  will check processes on a system and alert if specific conditions exist based upon a set of filters that each has implemented.
 
-*check-cmd* will run a specific user designated command and parse the output with a regex or check for a specific status code.  If either of these conditions is not what is expected it will alert.
+**check-cmd** will run a specific user designated command and parse the output with a regex or check for a specific status code.  If either of these conditions is not what is expected it will alert.
 
 ## Files
  * bin/check-cmd.rb
