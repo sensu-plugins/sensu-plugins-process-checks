@@ -1,9 +1,8 @@
-## Sensu-Plugins-Process-Checks
-
-[![Build Status](https://travis-ci.org/sensu-plugins/sensu-plugins-process-checks.svg?branch=master)](https://travis-ci.org/sensu-plugins/sensu-plugins-process-checks)
-[![Gem Version](https://badge.fury.io/rb/sensu-plugins-process-checks.svg)](http://badge.fury.io/rb/sensu-plugins-process-checks)
-[![Code Climate](https://codeclimate.com/github/sensu-plugins/sensu-plugins-process-checks/badges/gpa.svg)](https://codeclimate.com/github/sensu-plugins/sensu-plugins-process-checks)
-[![Test Coverage](https://codeclimate.com/github/sensu-plugins/sensu-plugins-process-checks/badges/coverage.svg)](https://codeclimate.com/github/sensu-plugins/sensu-plugins-process-checks)
+[![Build Status](https://travis-ci.org/sensu-plugins/sensu-plugins-process-checks.svg?branch=master)][1]
+[![Gem Version](https://badge.fury.io/rb/sensu-plugins-process-checks.svg)][2]
+[![Code Climate](https://codeclimate.com/github/sensu-plugins/sensu-plugins-process-checks/badges/gpa.svg)][3]
+[![Test Coverage](https://codeclimate.com/github/sensu-plugins/sensu-plugins-process-checks/badges/coverage.svg)][4]
+[![Dependency Status](https://gemnasium.com/sensu-plugins/sensu-plugins-process-checks.svg)][5]
 
 ## Functionality
 
@@ -16,19 +15,39 @@
  * bin/check-process-restart.rb
  * bin/check-process.rb
 
-## Installation
+## Usage
 
-Add the public key (if you haven’t already) as a trusted certificate
-
-```
-gem cert --add <(curl -Ls https://raw.githubusercontent.com/sensu-plugins/sensu-plugins.github.io/master/certs/sensu-plugins.pem)
-gem install <gem> -P MediumSecurity
-```
-
-You can also download the key from /certs/ within each repository.
+#### Rubygems
 
 `gem install sensu-plugins-process-checks`
 
-Add *sensu-plugins-process-checks* to your Gemfile, manifest, cookbook, etc
+#### Bundler
+
+Add *sensu-plugins-disk-checks* to your Gemfile and run `bundle install` or `bundle update`
+
+#### Chef
+
+Using the Sensu **sensu_gem** LWRP
+```
+sensu_gem 'sensu-plugins-process-checks' do
+  options('--prerelease')
+  version '0.0.1.alpha.4'
+end
+```
+
+Using the Chef **gem_package** resource
+```
+gem_package 'sensu-plugins-process-checks' do
+  options('--prerelease')
+  version '0.0.1.alpha.4'
+end
+```
 
 ## Notes
+
+
+[1]:[https://travis-ci.org/sensu-plugins/sensu-plugins-process-checks]
+[2]:[http://badge.fury.io/rb/sensu-plugins-process-checks]
+[3]:[https://codeclimate.com/github/sensu-plugins/sensu-plugins-process-checks]
+[4]:[https://codeclimate.com/github/sensu-plugins/sensu-plugins-process-checks]
+[5]:[https://gemnasium.com/sensu-plugins/sensu-plugins-process-checks]

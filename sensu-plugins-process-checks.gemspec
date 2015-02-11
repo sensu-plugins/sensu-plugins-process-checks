@@ -1,7 +1,7 @@
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'date'
 
+require 'date'
 if RUBY_VERSION < '2.0.0'
   require 'sensu-plugins-process-checks'
 else
@@ -13,11 +13,11 @@ pvt_key = '~/.ssh/gem-private_key.pem'
 Gem::Specification.new do |s|
   s.name                   = 'sensu-plugins-process-checks'
   s.version                = SensuPluginsProcessChecks::VERSION
-  s.authors                = ['Yieldbot, Inc, and contributors']
-  s.email                  = '<sensu-users@googlegroups.com>'
-  s.homepage               = 'https://github.com/sensu-plugins/sensu-plugins-process-checks'
   s.summary                = 'Sensu process checks'
   s.description            = 'Sensu process checks'
+  s.authors                = ["Yieldbot, Inc. and contributors"]
+  s.email                  = '<sensu-users@googlegroups.com>'
+  s.homepage               = 'https://github.com/sensu-plugins/sensu-plugins-process-checks'
   s.license                = 'MIT'
   s.date                   = Date.today.to_s
   s.files                  = Dir.glob('{bin,lib}/**/*') + %w(LICENSE README.md CHANGELOG.md)
@@ -41,4 +41,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'github-markup'
   s.add_development_dependency 'redcarpet'
   s.add_development_dependency 'yard'
+  s.add_development_dependency 'pry'
 end
