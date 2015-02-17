@@ -1,9 +1,9 @@
 require 'bundler/gem_tasks'
 require 'rspec/core/rake_task'
-require 'rubocop/rake_task'
-require 'github/markup'
-require 'redcarpet'
 require 'yard'
+require 'github/markup'
+require 'rubocop/rake_task'
+require 'redcarpet'
 require 'yard/rake/yardoc_task'
 
 desc 'Don\'t run Rubocop for unsupported versions'
@@ -29,7 +29,7 @@ end
 
 desc 'Make all plugins executable'
 task :make_bin_executable do
-  `chmod -R +x bin/*`
+  `chmod -R +x bin/***/*.rb`
 end
 
 task default: args

@@ -14,6 +14,8 @@
  * bin/check-cmd.rb
  * bin/check-process-restart.rb
  * bin/check-process.rb
+ * bin/check-process.sh
+ * bin/metrics-process-status
 
 ## Usage
 
