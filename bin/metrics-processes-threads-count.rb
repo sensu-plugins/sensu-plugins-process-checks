@@ -18,7 +18,7 @@
 #
 # USAGE:
 #   Pass [-t|--threads] to count the number of running threads in addition to processes.
-#   The check will return an UNKNOWN if the sys-proctable version is not new enough to support it.
+#   The check will return an UNKNOWN if the sys-proctable version is not new enough to support counting threads.
 #
 # NOTES:
 #   sys-proctable > 0.9.5 is required for counting threads (-t, --threads)
@@ -33,6 +33,9 @@
 require 'sensu-plugin/metric/cli'
 require 'sys/proctable'
 
+#
+# Processes and Threads Count Metrics
+#
 class ProcessesThreadsCount < Sensu::Plugin::Metric::CLI::Graphite
   option :scheme,
          description: 'Scheme for metric output',
@@ -49,12 +52,11 @@ class ProcessesThreadsCount < Sensu::Plugin::Metric::CLI::Graphite
 
   # Exit with an unknown if sys-proctable is not high enough to support counting threads.
   def check_proctable_version
-    unless Gem.loaded_specs['sys-proctable'].version > Gem::Version.create('0.9.5')
-      unknown "sys-proctable version newer than 0.9.5 is required for counting threads with -t or --threads"
-    end
+    msg = 'sys-proctable version newer than 0.9.5 is required for counting threads with -t or --threads'
+    unknown msg unless Gem.loaded_specs['sys-proctable'].version > Gem::Version.create('0.9.5')
   end
 
-  # Takes a value to be tested as an integer. If a new Integer instance cannot be created from it, return 1. 
+  # Takes a value to be tested as an integer. If a new Integer instance cannot be created from it, return 1.
   # See the comments on get_process_threads() for why 1 is returned.
   def test_int(i)
     return Integer(i) rescue return 1
@@ -84,11 +86,11 @@ class ProcessesThreadsCount < Sensu::Plugin::Metric::CLI::Graphite
         sum + get_process_threads(p)
       end
     end
-    
+
     timestamp = Time.now.to_i
-    output "#{[ config[:scheme], 'process_count' ].join('.')} #{processes} #{timestamp}"
+    output "#{[config[:scheme], 'process_count'].join('.')} #{processes} #{timestamp}"
     if config[:threads]
-      output "#{[ config[:scheme], 'thread_count' ].join('.')} #{threads} #{timestamp}"
+      output "#{[config[:scheme], 'thread_count'].join('.')} #{threads} #{timestamp}"
     end
     ok
   end
