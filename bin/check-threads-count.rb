@@ -78,7 +78,7 @@ class ThreadsCount < Sensu::Plugin::Check::CLI
   def run
     check_proctable_version
     ps_table = Sys::ProcTable.ps
-    threads = ps_table.inject(0) do |sum, p|
+    threads = ps_table.reduce(0) do |sum, p|
       sum + get_process_threads(p)
     end
 

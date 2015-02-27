@@ -82,7 +82,7 @@ class ProcessesThreadsCount < Sensu::Plugin::Metric::CLI::Graphite
     ps_table = Sys::ProcTable.ps
     processes = ps_table.length
     if config[:threads]
-      threads = ps_table.inject(0) do |sum, p|
+      threads = ps_table.reduce(0) do |sum, p|
         sum + get_process_threads(p)
       end
     end
