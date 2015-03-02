@@ -50,10 +50,11 @@ class ProcessesThreadsCount < Sensu::Plugin::Metric::CLI::Graphite
          boolean: true,
          default: false
 
+  PROCTABLE_MSG = 'sys-proctable version newer than 0.9.5 is required for counting threads with -t or --threads'
+
   # Exit with an unknown if sys-proctable is not high enough to support counting threads.
   def check_proctable_version
-    msg = 'sys-proctable version newer than 0.9.5 is required for counting threads with -t or --threads'
-    unknown msg unless Gem.loaded_specs['sys-proctable'].version > Gem::Version.create('0.9.5')
+    Gem.loaded_specs['sys-proctable'].version > Gem::Version.create('0.9.5')
   end
 
   # Takes a value to be tested as an integer. If a new Integer instance cannot be created from it, return 1.
@@ -76,16 +77,20 @@ class ProcessesThreadsCount < Sensu::Plugin::Metric::CLI::Graphite
     end
   end
 
+  def count_threads(ps_table)
+    ps_table.reduce(0) do |sum, p|
+      sum + get_process_threads(p)
+    end
+  end
+
   # Main function
   def run
-    check_proctable_version if config[:threads]
+    if config[:threads]
+      unknown PROCTABLE_MSG unless check_proctable_version
+    end
     ps_table = Sys::ProcTable.ps
     processes = ps_table.length
-    if config[:threads]
-      threads = ps_table.reduce(0) do |sum, p|
-        sum + get_process_threads(p)
-      end
-    end
+    threads = count_threads(ps_table) if config[:threads]
 
     timestamp = Time.now.to_i
     output "#{[config[:scheme], 'process_count'].join('.')} #{processes} #{timestamp}"
