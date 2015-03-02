@@ -35,16 +35,16 @@ describe ThreadsCount, 'count_threads' do
   # Here, we mock Sys::ProcTable.ps() to return an array of structs with only the property this class cares about.
   #
   it 'should be able to count threads from ProcTable structs with :nlwp fields' do
-    NLWPEntry = Struct.new(:nlwp)
-    table = [NLWPEntry.new(3), NLWPEntry.new(1), NLWPEntry.new(6)]
+    nlwp_entry = Struct.new(:nlwp)
+    table = [nlwp_entry.new(3), nlwp_entry.new(1), nlwp_entry.new(6)]
     allow(Sys::ProcTable).to receive(:ps).and_return(table)
     threadscount = ThreadsCount.new
     expect(threadscount.count_threads).to eq(10)
   end
 
   it 'should be able to count threads from ProcTable structs with :thread_count fields' do
-    TCEntry = Struct.new(:thread_count)
-    table = [TCEntry.new(3), TCEntry.new(1), TCEntry.new(6)]
+    tc_entry = Struct.new(:thread_count)
+    table = [tc_entry.new(3), tc_entry.new(1), tc_entry.new(6)]
     allow(Sys::ProcTable).to receive(:ps).and_return(table)
     threadscount = ThreadsCount.new
     expect(threadscount.count_threads).to eq(10)
