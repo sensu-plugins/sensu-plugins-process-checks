@@ -32,6 +32,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'english',           '0.6.3'
   s.add_runtime_dependency 'sensu-plugin',      '1.1.0'
   s.add_runtime_dependency 'json',              '1.8.2'
+  s.add_runtime_dependency 'sys-proctable',     '0.9.6'
 
   s.add_development_dependency 'codeclimate-test-reporter'
   s.add_development_dependency 'rubocop',       '~> 0.17.0'
