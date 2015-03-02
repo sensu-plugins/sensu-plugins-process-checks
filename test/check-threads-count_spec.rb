@@ -1,6 +1,27 @@
 #!/usr/bin/env ruby
 #
-
+# check-threads-count_spec
+#
+# DESCRIPTION:
+#   Tests for check-threads-count.rb
+#
+# OUTPUT:
+#
+# PLATFORMS:
+#
+# DEPENDENCIES:
+#
+# USAGE:
+#   bundle install
+#   rake spec
+#
+# NOTES:
+#   This test suite mocks up a process table to be returned by Sys::ProcTable.ps()
+#
+# LICENSE:
+#   Copyright 2015 Contegix, LLC.
+#   Released under the same terms as Sensu (the MIT license); see LICENSE for details.
+#
 require_relative './plugin_stub.rb'
 require_relative './spec_helper.rb'
 require_relative '../bin/check-threads-count.rb'
@@ -36,7 +57,7 @@ describe ThreadsCount, 'run' do
   it 'returns unknown if check_proctable_version returns false' do
     threadscount = ThreadsCount.new
     allow(threadscount).to receive(:count_threads).and_return(0)
-    allow(threadscount).to receive(:check_proctable_version) { false }
+    allow(threadscount).to receive(:check_proctable_version).and_return(false)
     expect(threadscount).to receive(:unknown)
     threadscount.run
   end
