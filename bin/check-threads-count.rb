@@ -52,7 +52,7 @@ class ThreadsCount < Sensu::Plugin::Check::CLI
 
   # Exit with an unknown if sys-proctable is not high enough to support counting threads.
   def check_proctable_version
-    Gem.loaded_specs['sys-proctable'].version > Gem::Version.create('0.9.5') 
+    Gem.loaded_specs['sys-proctable'].version > Gem::Version.create('0.9.5')
   end
 
   # Takes a value to be tested as an integer. If a new Integer instance cannot be created from it, return 1.
