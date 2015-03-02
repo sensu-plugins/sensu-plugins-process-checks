@@ -48,10 +48,11 @@ class ThreadsCount < Sensu::Plugin::Check::CLI
          default: 32_000,
          proc: proc(&:to_i)
 
+  PROCTABLE_MSG = 'sys-proctable version newer than 0.9.5 is required for counting threads with -t or --threads'
+
   # Exit with an unknown if sys-proctable is not high enough to support counting threads.
   def check_proctable_version
-    msg = 'sys-proctable version newer than 0.9.5 is required for counting threads with -t or --threads'
-    unknown msg unless Gem.loaded_specs['sys-proctable'].version > Gem::Version.create('0.9.5')
+    Gem.loaded_specs['sys-proctable'].version > Gem::Version.create('0.9.5') ? true : false
   end
 
   # Takes a value to be tested as an integer. If a new Integer instance cannot be created from it, return 1.
@@ -74,16 +75,22 @@ class ThreadsCount < Sensu::Plugin::Check::CLI
     end
   end
 
-  # Main function
-  def run
-    check_proctable_version
+  def count_threads
     ps_table = Sys::ProcTable.ps
-    threads = ps_table.reduce(0) do |sum, p|
+    ps_table.reduce(0) do |sum, p|
       sum + get_process_threads(p)
     end
+  end
 
-    critical "#{threads} threads running, over threshold #{config[:crit]}" if threads > config[:crit]
-    warning "#{threads} threads running, over threshold #{config[:warn]}" if threads > config[:warn]
-    ok "#{threads} threads running"
+  # Main function
+  def run
+    if !check_proctable_version
+      unknown PROCTABLE_MSG unless check_proctable_version
+    else
+      threads = count_threads
+      critical "#{threads} threads running, over threshold #{config[:crit]}" if threads > config[:crit]
+      warning "#{threads} threads running, over threshold #{config[:warn]}" if threads > config[:warn]
+      ok "#{threads} threads running"
+    end
   end
 end
