@@ -3,6 +3,7 @@ RSpec.configure do |c|
   # XXX: code-under-test from being run at the end of the rspec suite.
   c.before(:each) do
     Sensu::Plugin::CLI.class_eval do
+      # PluginStub
       class PluginStub
         def run; end
 
@@ -20,4 +21,3 @@ RSpec.configure do |c|
     end
   end
 end
-

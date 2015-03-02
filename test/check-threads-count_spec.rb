@@ -15,7 +15,7 @@ describe ThreadsCount, 'count_threads' do
   #
   it 'should be able to count threads from ProcTable structs with :nlwp fields' do
     NLWPEntry = Struct.new(:nlwp)
-    table = [ NLWPEntry.new(3), NLWPEntry.new(1), NLWPEntry.new(6) ]
+    table = [NLWPEntry.new(3), NLWPEntry.new(1), NLWPEntry.new(6)]
     allow(Sys::ProcTable).to receive(:ps).and_return(table)
     threadscount = ThreadsCount.new
     expect(threadscount.count_threads).to eq(10)
@@ -23,7 +23,7 @@ describe ThreadsCount, 'count_threads' do
 
   it 'should be able to count threads from ProcTable structs with :thread_count fields' do
     TCEntry = Struct.new(:thread_count)
-    table = [ TCEntry.new(3), TCEntry.new(1), TCEntry.new(6) ]
+    table = [TCEntry.new(3), TCEntry.new(1), TCEntry.new(6)]
     allow(Sys::ProcTable).to receive(:ps).and_return(table)
     threadscount = ThreadsCount.new
     expect(threadscount.count_threads).to eq(10)
@@ -47,7 +47,7 @@ describe ThreadsCount, 'run' do
     threadscount.config[:crit] = 15
     allow(threadscount).to receive(:count_threads).and_return(20)
     expect(threadscount).to receive(:critical)
-    expect(lambda { threadscount.run }).to raise_error SystemExit
+    expect(-> { threadscount.run }).to raise_error SystemExit
   end
 
   it 'returns warning if count_threads returns more than the warning threshold' do
@@ -56,7 +56,7 @@ describe ThreadsCount, 'run' do
     threadscount.config[:crit] = 30
     allow(threadscount).to receive(:count_threads).and_return(20)
     expect(threadscount).to receive(:warning)
-    expect(lambda { threadscount.run }).to raise_error SystemExit
+    expect(-> { threadscount.run }).to raise_error SystemExit
   end
 
   it 'returns ok if count_threads returns less than the critical or warning thresholds' do
@@ -69,4 +69,3 @@ describe ThreadsCount, 'run' do
   end
 
 end
-
