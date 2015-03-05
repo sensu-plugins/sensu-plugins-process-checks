@@ -8,9 +8,15 @@ rvm:
   - 2.0
   - 2.1
 notifications:
+  irc:
+    channels:
+      - "chat.freenode.net#sensu"
+    on_success: change
+    on_failure: always
   email:
     recipients:
       - mattjones@yieldbot.com
+      - rich.m.chatterton@gmail.com
     on_success: change
     on_failure: always
 
