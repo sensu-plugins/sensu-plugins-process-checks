@@ -19,3 +19,13 @@
 
 * add proc-status-metrics
 * change proc-status-metrics to process-status-metrics
+
+#### 0.0.1.alpha.4
+
+* convert scrips to sys-proctable gem for platform independence
+
+#### 0.0.1.alpha.5
+
+* add new check for process uptime metrics
+
+
