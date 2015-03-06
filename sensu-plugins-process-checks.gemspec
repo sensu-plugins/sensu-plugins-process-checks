@@ -35,7 +35,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'sys-proctable',     '0.9.6'
 
   s.add_development_dependency 'codeclimate-test-reporter'
-  s.add_development_dependency 'rubocop',       '~> 0.17'
+  s.add_development_dependency 'rubocop',       '0.17.0'
   s.add_development_dependency 'rspec',         '~> 3.1'
   s.add_development_dependency 'bundler',       '~> 1.7'
   s.add_development_dependency 'rake',          '~> 10.0'
