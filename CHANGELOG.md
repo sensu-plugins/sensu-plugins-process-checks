@@ -28,4 +28,9 @@
 
 * add new check for process uptime metrics
 
+#### 0.0.1.alpha.6
+
+* add chef provisioner to Vagrantfile
+* fix rubocop errors
+* add metadata to gemspec
 
