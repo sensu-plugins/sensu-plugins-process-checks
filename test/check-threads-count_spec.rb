@@ -49,11 +49,9 @@ describe ThreadsCount, 'count_threads' do
     threadscount = ThreadsCount.new
     expect(threadscount.count_threads).to eq(10)
   end
-
 end
 
 describe ThreadsCount, 'run' do
-
   it 'returns unknown if check_proctable_version returns false' do
     threadscount = ThreadsCount.new
     allow(threadscount).to receive(:count_threads).and_return(0)
@@ -88,5 +86,4 @@ describe ThreadsCount, 'run' do
     expect(threadscount).to receive(:ok)
     threadscount.run
   end
-
 end

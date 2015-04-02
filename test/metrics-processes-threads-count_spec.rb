@@ -45,11 +45,9 @@ describe ProcessesThreadsCount, 'count_threads' do
     ptcount = ProcessesThreadsCount.new
     expect(ptcount.count_threads(table)).to eq(10)
   end
-
 end
 
 describe ThreadsCount, 'run' do
-
   it 'returns unknown if check_proctable_version returns false and config[:threads] is true' do
     nlwp_entry = Struct.new(:thread_count)
     table = [nlwp_entry.new(3), nlwp_entry.new(1), nlwp_entry.new(6)]
@@ -96,5 +94,4 @@ describe ThreadsCount, 'run' do
     expect(ptcount).to_not receive(:output).with(match('threads_count 10 '))
     expect(-> { ptcount.run }).to raise_error SystemExit
   end
-
 end
