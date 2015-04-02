@@ -52,7 +52,7 @@ class CheckCmdStatus < Sensu::Plugin::Check::CLI
   # Acquire the exit code and/or output of a command and alert if it is not
   # what is expected.
   #
-  def acquire_cmd_status
+  def acquire_cmd_status # rubocop:disable all
     stdout = `#{config[:command]}`
     # #YELLOW
     unless $CHILD_STATUS.exitstatus.to_s == config[:status] # rubocop:disable UnlessElse

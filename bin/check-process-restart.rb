@@ -94,7 +94,7 @@ class CheckProcessRestart < Sensu::Plugin::Check::CLI
 
   # Main run method for the check
   #
-  def run
+  def run # rubocop:disable all
     unless checkrestart?
       unknown "Can't seem to find checkrestart. This check only works in a Debian based distribution and you need debian-goodies package installed"
     end
