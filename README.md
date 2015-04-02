@@ -48,10 +48,3 @@ end
 ```
 
 ## Notes
-
-
-[1]:[https://travis-ci.org/sensu-plugins/sensu-plugins-process-checks]
-[2]:[http://badge.fury.io/rb/sensu-plugins-process-checks]
-[3]:[https://codeclimate.com/github/sensu-plugins/sensu-plugins-process-checks]
-[4]:[https://codeclimate.com/github/sensu-plugins/sensu-plugins-process-checks]
-[5]:[https://gemnasium.com/sensu-plugins/sensu-plugins-process-checks]
