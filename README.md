@@ -21,10 +21,6 @@
  * bin/metrics-processes-threads-count.rb
  * bin/process-uptime-metrics.sh
 
- check-cmd.rb rb rb rb check-threads-count.rb rb rb process-uptime-metrics.sh
- check-process-restart.rb rb metrics-process-status.rb
- check-process.rb rb rb metrics-processes-threads-count.rb
-
 ## Usage
 
 #### Rubygems
