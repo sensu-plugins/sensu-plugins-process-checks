@@ -1,7 +1,14 @@
+require 'sensu-plugins-process-checks/version'
+
+# Load the defaults
+
 #
-# Set gem version
+# Default class
 #
 module SensuPluginsProcessChecks
-  # Gem version
-  VERSION = '0.0.1.alpha.5'
+  class << self
+  end
+
+  class << self
+  end
 end

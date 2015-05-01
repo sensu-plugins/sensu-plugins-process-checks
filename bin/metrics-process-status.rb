@@ -112,7 +112,7 @@ class ProcStatus < Sensu::Plugin::Metric::CLI::Graphite
     out = { "#{cmdline}" => {} }
 
     metric_names.each do |m|
-      line = proc_status_lines.select { |x| /^#{m}/.match(x) }.first
+      line = proc_status_lines.select { |x| /^#{m}/.match(x) }.first # rubocop:disable all
       val = line ? line.split("\t")[1].to_i : nil
       out[cmdline.to_s][m] = val
     end

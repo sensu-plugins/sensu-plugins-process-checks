@@ -5,6 +5,7 @@
 [![Code Climate](https://codeclimate.com/github/sensu-plugins/sensu-plugins-process-checks/badges/gpa.svg)](https://codeclimate.com/github/sensu-plugins/sensu-plugins-process-checks)
 [![Test Coverage](https://codeclimate.com/github/sensu-plugins/sensu-plugins-process-checks/badges/coverage.svg)](https://codeclimate.com/github/sensu-plugins/sensu-plugins-process-checks)
 [![Dependency Status](https://gemnasium.com/sensu-plugins/sensu-plugins-process-checks.svg)](https://gemnasium.com/sensu-plugins/sensu-plugins-process-checks)
+[ ![Codeship Status for sensu-plugins/sensu-plugins-process-checks](https://codeship.com/projects/feb27000-d25e-0132-6aab-4ad10baf29cc/status?branch=master)](https://codeship.com/projects/77521)
 
 ## Functionality
 
@@ -23,30 +24,8 @@
 
 ## Usage
 
-#### Rubygems
+### Installation
 
-`gem install sensu-plugins-process-checks`
-
-#### Bundler
-
-Add *sensu-plugins-disk-checks* to your Gemfile and run `bundle install` or `bundle update`
-
-#### Chef
-
-Using the Sensu **sensu_gem** LWRP
-```
-sensu_gem 'sensu-plugins-process-checks' do
-  options('--prerelease')
-  version '0.0.1.alpha.4'
-end
-```
-
-Using the Chef **gem_package** resource
-```
-gem_package 'sensu-plugins-process-checks' do
-  options('--prerelease')
-  version '0.0.1.alpha.4'
-end
-```
+[Installation and Setup](https://github.com/sensu-plugins/documentation/blob/master/user_docs/installation_instructions.md)
 
 ## Notes
