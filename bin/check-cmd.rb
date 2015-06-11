@@ -26,7 +26,7 @@
 #
 
 require 'sensu-plugin/check/cli'
-require 'english'
+require 'English'
 
 #
 # Check Command Status
