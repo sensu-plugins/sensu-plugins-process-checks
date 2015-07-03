@@ -105,8 +105,8 @@ class CheckProcessRestart < Sensu::Plugin::Check::CLI
     end
     message JSON.generate(checkrestart_out)
     found = checkrestart_out[:found].to_i
-    warning if found >= config[:warn] && found < config[:crit]
-    critical if found >= config[:crit]
+    warning if found >= config[:warn].to_i && found < config[:crit].to_i
+    critical if found >= config[:crit].to_i
     ok
   end
 end
