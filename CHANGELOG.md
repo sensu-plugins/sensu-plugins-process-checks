@@ -5,6 +5,10 @@ This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachang
 
 ## Unreleased][unreleased]
 
+### Fixed
+
+- issue #9: variable type conversion to_i
+
 ## [0.0.2] - 2015-06-03
 
 ### Fixed
