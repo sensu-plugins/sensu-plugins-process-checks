@@ -5,9 +5,16 @@ This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachang
 
 ## Unreleased][unreleased]
 
-### Fixed
 
-- issue #9: variable type conversion to_i
+## [0.0.3] - [2015-07-13]
+### Fixed
+- issue #9: variable type conversion to_i in check-process-restart
+
+### Changed
+- updated documentation links in README and CONTRIBUTING
+- removed unused rake tasks from Rakefile
+- puts deps in alpha order in Rakefile
+- puts deps in order in Gemspec
 
 ## [0.0.2] - 2015-06-03
 
@@ -17,43 +24,58 @@ This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachang
 ### Changed
 - removed cruft from /lib
 
-## 0.0.1 - 2015-05-01
+## [0.0.1] - [2015-05-01]
 
 ### Added
-- initial release
+- initial stable release
 
-#### 0.0.1.alpha.6
+## [0.0.1.alpha.6]
 
-* add chef provisioner to Vagrantfile
-* fix rubocop errors
-* add metadata to gemspec
+### Added
+- add chef provisioner to Vagrantfile
+- add metadata to gemspec
 
-#### 0.0.1.alpha.5
+### Fixed
+- fix rubocop errors
 
-* add new check for process uptime metrics
+## [0.0.1.alpha.5]
 
-#### 0.0.1.alpha.4
+### Added
+- add new check for process uptime metrics
 
-* convert scrips to sys-proctable gem for platform independence
+## [0.0.1.alpha.4]
 
-#### 0.0.1-alpha.3
+### Changed
+- convert scrips to sys-proctable gem for platform independence
 
-* add proc-status-metrics
-* change proc-status-metrics to process-status-metrics
+## [0.0.1-alpha.3]
 
-#### 0.0.1-alpha.2
+### Added
+- add proc-status-metrics
 
-* bump Vagrant to Chef 6.6
-* update LICENSE and gemspec authors
-* update README
-* add required Ruby version *>= 1.9.3*
-* add test/spec_help.rb
+### Changed
+- change proc-status-metrics to process-status-metrics
 
-#### 0.1.0-alpha.1
+## [0.0.1-alpha.2]
 
-* baseline release identical to **sensu-community-plugins** repo
-* changed *check-procs* to *check-process* to better reflect its use
-* basic yard coverage
-* pinned dependencies
-* built against 1.9.3, 2.0, 2.1
-* cryptographically signed
+### Changed
+- bump Vagrant to Chef 6.6
+- update LICENSE and gemspec authors
+- update README
+
+### Added
+- add required Ruby version *>= 1.9.3*
+- add test/spec_help.rb
+
+## [0.1.0-alpha.1]
+
+- baseline release identical to **sensu-community-plugins** repo
+
+### Changed
+- changed *check-procs* to *check-process* to better reflect its use
+- pinned dependencies
+
+### Added
+- basic yard coverage
+- built against 1.9.3, 2.0, 2.1
+- cryptographically signed
