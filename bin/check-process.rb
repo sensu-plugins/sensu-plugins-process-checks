@@ -95,6 +95,11 @@ class CheckProcess < Sensu::Plugin::Check::CLI
          long: '--pattern PATTERN',
          description: 'Match a command against this pattern'
 
+  option :exclude_pat,
+         short: '-x PATTERN',
+         long: '--exclude-pattern PATTERN',
+         description: "Don't match against a pattern to prevent false positives"
+
   option :file_pid,
          short: '-f PID',
          long: '--file-pid PID',
@@ -239,6 +244,7 @@ class CheckProcess < Sensu::Plugin::Check::CLI
     end
     procs.reject! { |p| p[:pid].to_i == $PROCESS_ID } unless config[:match_self]
     procs.reject! { |p| p[:pid].to_i == Process.ppid } unless config[:match_parent]
+    procs.reject! { |p| p[:command] =~ /#{config[:exclude_pat]}/ } if config[:exclude_pat]
     procs.reject! { |p| p[:command] !~ /#{config[:cmd_pat]}/ } if config[:cmd_pat]
     procs.reject! { |p| p[:vsz].to_f > config[:vsz] } if config[:vsz]
     procs.reject! { |p| p[:rss].to_f > config[:rss] } if config[:rss]
