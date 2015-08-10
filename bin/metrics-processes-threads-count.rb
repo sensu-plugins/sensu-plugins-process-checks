@@ -41,7 +41,7 @@ class ProcessesThreadsCount < Sensu::Plugin::Metric::CLI::Graphite
          description: 'Scheme for metric output',
          short: '-s SCHEME',
          long: '--scheme SCHEME',
-         default: 'system'
+         default: "#{Socket.gethostname}.system"
 
   option :threads,
          description: 'If specified, count the number of threads running on the system in addition to processes. Note: Requires sys-proctables > 0.9.5',
