@@ -5,6 +5,10 @@ This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachang
 
 ## Unreleased
 
+## [0.1.0] - 2015-08-11
+### Added
+- Add metrics-per-process.py plugin (require python psutil module)
+
 ## [0.0.4] - 2015-07-14
 ### Changed
 - updated sensu-plugin gem to 1.2.0
