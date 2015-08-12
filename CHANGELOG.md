@@ -4,8 +4,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachangelog.com/)
 
 ## Unreleased
+- nothing
+
+## [0.0.5] - 2015-07-14
 ### Fixed
 - include hostname in default scheme in metrics-processes-threads-count
+
+### Changed
+rename process-uptime metrics.sh -> metrics-process-uptime.sh
 
 ## [0.0.4] - 2015-07-14
 ### Changed
@@ -84,3 +90,9 @@ This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachang
 - basic yard coverage
 - built against 1.9.3, 2.0, 2.1
 - cryptographically signed
+
+[unreleased]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/0.0.5...HEAD
+[0.0.5]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/0.0.4...0.0.5
+[0.0.4]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/0.0.3...0.0.4
+[0.0.3]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/0.0.2...0.0.3
+[0.0.2]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/0.0.1...0.0.2

@@ -83,7 +83,7 @@ class ThreadsCount < Sensu::Plugin::Check::CLI
   end
 
   # Main function
-  def run # rubocop:disable all
+  def run
     if !check_proctable_version
       unknown PROCTABLE_MSG unless check_proctable_version
     else

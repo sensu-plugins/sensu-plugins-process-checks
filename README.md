@@ -20,7 +20,7 @@
  * bin/check-threads-count.rb
  * bin/metrics-process-status.rb
  * bin/metrics-processes-threads-count.rb
- * bin/process-uptime-metrics.sh
+ * bin/metrics-process-uptime.sh
 
 ## Usage
 

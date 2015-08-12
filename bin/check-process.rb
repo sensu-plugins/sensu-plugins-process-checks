@@ -222,14 +222,14 @@ class CheckProcess < Sensu::Plugin::Check::CLI
 
   # Match to a time
   #
-  def etime_to_esec(etime) # rubocop:disable all
+  def etime_to_esec(etime)
     m = /(\d+-)?(\d\d:)?(\d\d):(\d\d)/.match(etime)
     (m[1] || 0).to_i * 86_400 + (m[2] || 0).to_i * 3600 + (m[3] || 0).to_i * 60 + (m[4] || 0).to_i
   end
 
   # Match to a time
   #
-  def cputime_to_csec(time)  # rubocop:disable all
+  def cputime_to_csec(time)
     m = /(\d+-)?(\d\d:)?(\d\d):(\d\d)/.match(time)
     (m[1] || 0).to_i * 86_400 + (m[2] || 0).to_i * 3600 + (m[3] || 0).to_i * 60 + (m[4] || 0).to_i
   end

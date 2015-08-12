@@ -100,7 +100,7 @@ class ProcStatus < Sensu::Plugin::Metric::CLI::Graphite
   #
   # @param pid [String]
   #
-  def acquire_stats_for_pid(pid) # rubocop:disable all
+  def acquire_stats_for_pid(pid)
     return nil unless ::File.exist?(::File.join('/proc', pid, 'cmdline'))
 
     cmdline_raw = `cat /proc/#{pid}/cmdline`
@@ -121,7 +121,7 @@ class ProcStatus < Sensu::Plugin::Metric::CLI::Graphite
 
   # Main functino
   #
-  def run # rubocop:disable all
+  def run
     fail 'You must supply -u USER or -p PROCESSNAME' unless config[:user] || config[:processname]
     metrics = {}
     pgrep_output = `#{pgrep_command}`

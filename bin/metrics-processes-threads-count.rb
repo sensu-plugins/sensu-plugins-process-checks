@@ -84,7 +84,7 @@ class ProcessesThreadsCount < Sensu::Plugin::Metric::CLI::Graphite
   end
 
   # Main function
-  def run # rubocop:disable all
+  def run
     if config[:threads]
       unknown PROCTABLE_MSG unless check_proctable_version
     end
