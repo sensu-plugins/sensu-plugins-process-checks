@@ -32,6 +32,7 @@
 
 require 'sensu-plugin/metric/cli'
 require 'sys/proctable'
+require 'socket'
 
 #
 # Processes and Threads Count Metrics
