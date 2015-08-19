@@ -4,7 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachangelog.com/)
 
 ## Unreleased
-- nothing
+### Fixed
+- require 'socket' in metrics-processes-threads-count
 
 ## [0.0.5] - 2015-07-14
 ### Fixed
