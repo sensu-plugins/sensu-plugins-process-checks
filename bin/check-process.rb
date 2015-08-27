@@ -236,7 +236,7 @@ class CheckProcess < Sensu::Plugin::Check::CLI
 
   # The main function
   #
-  def run # rubocop:disable all
+  def run
     procs = acquire_procs
 
     if config[:file_pid] && (file_pid = read_pid(config[:file_pid]))
