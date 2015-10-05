@@ -1,4 +1,5 @@
 #! /usr/bin/env ruby
+# encoding: UTF-8
 #
 # check-process
 #
@@ -165,6 +166,11 @@ class CheckProcess < Sensu::Plugin::Check::CLI
          proc: proc(&:to_i),
          description: 'Match processes cpu time that is younger than this, in SECONDS'
 
+  option :encoding,
+         description: 'Explicit encoding when reading process list',
+         long: '--encoding ENCODING',
+         default: 'ASCII-8BIT'
+
   # Read the pid file
   # @param path [String] the path to the pid file, including the file
   def read_pid(path)
@@ -178,7 +184,7 @@ class CheckProcess < Sensu::Plugin::Check::CLI
   # read the output of a command
   # @param cmd [String] the command to read the output from
   def read_lines(cmd)
-    IO.popen(cmd + ' 2>&1') do |child|
+    IO.popen(cmd + ' 2>&1', external_encoding: config[:encoding]) do |child|
       child.read.split("\n")
     end
   end
