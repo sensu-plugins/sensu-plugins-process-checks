@@ -25,10 +25,10 @@
 #
 # USAGE:
 #   # chef-client is running
-#   check-procs -p chef-client -W 1
+#   check-process.rb -p chef-client -W 1
 #
 #   # there are not too many zombies
-#   check-procs -s Z -w 5 -c 10
+#   check-process.rb -s Z -w 5 -c 10
 #
 # NOTES:
 #
