@@ -1,19 +1,31 @@
 language: ruby
 cache:
-  - bundler
+- bundler
 install:
-  - bundle install
+- bundle install
 rvm:
-  - 1.9.3
-  - 2.0
-  - 2.1
-  - 2.2
+- 1.9.3
+- 2.0
+- 2.1
+- 2.2
 notifications:
   email:
     recipients:
-      - sensu-plugin@sensu-plugins.io
+    - sensu-plugin@sensu-plugins.io
     on_success: change
     on_failure: always
-
 script:
-  - 'bundle exec rake default'
+- bundle exec rake default
+deploy:
+  provider: rubygems
+  api_key:
+    secure: TDJDqPWgxhJra4oKLChJbvg2+R2zLBOdjhhbcrTAYX7FJJDJ67n9LCXLI5+abS/K0e+qC/PCQ1dN0vRHlxXXdz0+dpxNKqP919nUenHgEVQVQsIRD/H/QjVAg3X5Mr6VJeV6Qi2HcYx2hVqj/owyuQG0gWmq1JRSv1J93A75asw=
+  gem: sensu-plugins-process-checks
+  on:
+    tags: true
+    all_branches: true
+    rvm: 1.9.3
+    rvm: 2.0
+    rvm: 2.1
+    rvm: 2.2
+    repo: sensu-plugins/sensu-plugins-process-checks
