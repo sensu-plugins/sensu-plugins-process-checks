@@ -14,7 +14,7 @@ This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachang
 - include hostname in default scheme in metrics-processes-threads-count
 
 ### Changed
-rename process-uptime metrics.sh -> metrics-process-uptime.sh
+- rename process-uptime metrics.sh -> metrics-process-uptime.sh
 
 ## [0.1.0] - 2015-08-11
 ### Added
@@ -35,20 +35,17 @@ rename process-uptime metrics.sh -> metrics-process-uptime.sh
 - puts deps in order in Gemspec
 
 ## [0.0.2] - 2015-06-03
-
 ### Fixed
 - added binstubs
 
 ### Changed
 - removed cruft from /lib
 
-## [0.0.1] - [2015-05-01]
-
+## 0.0.1 - [2015-05-01]
 ### Added
 - initial stable release
 
-## [0.0.1.alpha.6]
-
+## 0.0.1.alpha.6
 ### Added
 - add chef provisioner to Vagrantfile
 - add metadata to gemspec
@@ -56,26 +53,22 @@ rename process-uptime metrics.sh -> metrics-process-uptime.sh
 ### Fixed
 - fix rubocop errors
 
-## [0.0.1.alpha.5]
-
+## 0.0.1.alpha.5
 ### Added
 - add new check for process uptime metrics
 
-## [0.0.1.alpha.4]
-
+## 0.0.1.alpha.4
 ### Changed
 - convert scrips to sys-proctable gem for platform independence
 
-## [0.0.1-alpha.3]
-
+## 0.0.1-alpha.3
 ### Added
 - add proc-status-metrics
 
 ### Changed
 - change proc-status-metrics to process-status-metrics
 
-## [0.0.1-alpha.2]
-
+## 0.0.1-alpha.2
 ### Changed
 - bump Vagrant to Chef 6.6
 - update LICENSE and gemspec authors
@@ -85,8 +78,7 @@ rename process-uptime metrics.sh -> metrics-process-uptime.sh
 - add required Ruby version *>= 1.9.3*
 - add test/spec_help.rb
 
-## [0.1.0-alpha.1]
-
+## 0.1.0-alpha.1
 - baseline release identical to **sensu-community-plugins** repo
 
 ### Changed
@@ -98,7 +90,8 @@ rename process-uptime metrics.sh -> metrics-process-uptime.sh
 - built against 1.9.3, 2.0, 2.1
 - cryptographically signed
 
-[unreleased]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/0.0.5...HEAD
+[unreleased]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/0.0.6...HEAD
+[0.0.6]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/0.0.5...0.0.6
 [0.0.5]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/0.0.4...0.0.5
 [0.0.4]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/0.0.3...0.0.4
 [0.0.3]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/0.0.2...0.0.3

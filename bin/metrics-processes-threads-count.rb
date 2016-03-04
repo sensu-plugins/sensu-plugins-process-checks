@@ -51,7 +51,7 @@ class ProcessesThreadsCount < Sensu::Plugin::Metric::CLI::Graphite
          boolean: true,
          default: false
 
-  PROCTABLE_MSG = 'sys-proctable version newer than 0.9.5 is required for counting threads with -t or --threads'
+  PROCTABLE_MSG = 'sys-proctable version newer than 0.9.5 is required for counting threads with -t or --threads'.freeze
 
   # Exit with an unknown if sys-proctable is not high enough to support counting threads.
   def check_proctable_version
@@ -61,7 +61,9 @@ class ProcessesThreadsCount < Sensu::Plugin::Metric::CLI::Graphite
   # Takes a value to be tested as an integer. If a new Integer instance cannot be created from it, return 1.
   # See the comments on get_process_threads() for why 1 is returned.
   def test_int(i)
-    return Integer(i) rescue return 1
+    return Integer(i)
+  rescue
+    return 1
   end
 
   # Takes a process struct from Sys::ProcTable.ps() as an argument
@@ -71,7 +73,7 @@ class ProcessesThreadsCount < Sensu::Plugin::Metric::CLI::Graphite
   def get_process_threads(p)
     if p.respond_to?(:nlwp)
       return test_int(p.nlwp)
-    elsif p.respond_to?(:thread_count)
+    elsif p.respond_to?(:thread_count) # rubocop:disable Style/GuardClause
       return test_int(p.thread_count)
     else
       return 1

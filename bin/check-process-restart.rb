@@ -53,7 +53,7 @@ class CheckProcessRestart < Sensu::Plugin::Check::CLI
          default: 2
 
   # Debian command to run
-  CHECK_RESTART = '/usr/sbin/checkrestart'
+  CHECK_RESTART = '/usr/sbin/checkrestart'.freeze
 
   # Set path for the checkrestart script
   #
@@ -100,7 +100,7 @@ class CheckProcessRestart < Sensu::Plugin::Check::CLI
     end
 
     checkrestart_out = run_checkrestart
-    if /^Failed/.match(checkrestart_out[:found])
+    if /^Failed/ =~ checkrestart_out[:found]
       unknown checkrestart_out[:found]
     end
     message JSON.generate(checkrestart_out)

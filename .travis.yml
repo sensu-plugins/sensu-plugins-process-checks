@@ -16,13 +16,15 @@ notifications:
     on_failure: always
 script:
 - bundle exec rake default
+- gem build sensu-plugins-process-checks.gemspec
+- gem install sensu-plugins-process-checks-*.gem
 deploy:
   provider: rubygems
   api_key:
-    secure: TDJDqPWgxhJra4oKLChJbvg2+R2zLBOdjhhbcrTAYX7FJJDJ67n9LCXLI5+abS/K0e+qC/PCQ1dN0vRHlxXXdz0+dpxNKqP919nUenHgEVQVQsIRD/H/QjVAg3X5Mr6VJeV6Qi2HcYx2hVqj/owyuQG0gWmq1JRSv1J93A75asw=
+    secure: K4zuPdQMW/jyCOO3+daQMp4dAlzdEi14qPx9Y09Zas5jFqCfbdIbK9fH3dzyuxoOOVrCjC9zW5EnNb8QveGcmRbtNx1ss4f626CLln2b+OE8jdmcQVHjVP1TmVI4Z2AvZnqSdKqPKQIiDPBHvO1BeIS4wgo2rXajuc7yUKOZuuA=
   gem: sensu-plugins-process-checks
   on:
-    tags: true
+    ags: true
     all_branches: true
     rvm: 1.9.3
     rvm: 2.0

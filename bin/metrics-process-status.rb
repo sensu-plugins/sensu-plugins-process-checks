@@ -109,7 +109,7 @@ class ProcStatus < Sensu::Plugin::Metric::CLI::Graphite
     metric_names = config[:metrics].split(',')
     proc_status_lines = `cat /proc/#{pid}/status`.split("\n")
 
-    out = { "#{cmdline}" => {} }
+    out = { cmdline.to_s => {} }
 
     metric_names.each do |m|
       line = proc_status_lines.find { |x| /^#{m}/.match(x) }
@@ -122,7 +122,7 @@ class ProcStatus < Sensu::Plugin::Metric::CLI::Graphite
   # Main functino
   #
   def run
-    fail 'You must supply -u USER or -p PROCESSNAME' unless config[:user] || config[:processname]
+    raise 'You must supply -u USER or -p PROCESSNAME' unless config[:user] || config[:processname]
     metrics = {}
     pgrep_output = `#{pgrep_command}`
     pids = acquire_valid_pids(pgrep_output)
