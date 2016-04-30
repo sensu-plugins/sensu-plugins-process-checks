@@ -4,6 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachangelog.com/)
 
 ## [Unreleased]
+- added support for Red Hat "needs-restarting" script to check-process-restart.rb
 
 ## [0.0.6] - 2015-08-24
 ### Fixed
