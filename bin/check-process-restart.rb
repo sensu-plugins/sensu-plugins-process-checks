@@ -76,7 +76,7 @@ class CheckProcessRestart < Sensu::Plugin::Check::CLI
   # @return [Boolean]
   #
   def needs_restarting?
-    File.exist?('/etc/redhat-release') && File.exist?(NEEDS_RESTARTING)
+    File.exist?(NEEDS_RESTARTING)
   end
 
   # Run checkrestart and parse process(es) and pid(s)
