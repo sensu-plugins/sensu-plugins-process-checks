@@ -71,9 +71,9 @@ class ProcessesThreadsCount < Sensu::Plugin::Metric::CLI::Graphite
   # Returns the number of processes in those fields.
   # Otherwise, returns 1 as all processes are assumed to have at least one thread.
   def get_process_threads(p)
-    if p.respond_to?(:nlwp)
+    if p.respond_to?(:nlwp) # rubocop:disable Style/GuardClause
       return test_int(p.nlwp)
-    elsif p.respond_to?(:thread_count) # rubocop:disable Style/GuardClause
+    elsif p.respond_to?(:thread_count)
       return test_int(p.thread_count)
     else
       return 1
