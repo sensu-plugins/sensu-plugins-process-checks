@@ -118,7 +118,7 @@ class CheckProcessRestart < Sensu::Plugin::Check::CLI
         m = /(\d+)\s:\s(.*)$/.match(l)
 
         if m
-          needs_restarting_hash[:pids] << { m[1] => m[2]  }
+          needs_restarting_hash[:pids] << { m[1] => m[2] }
         end
       end
     end
@@ -159,4 +159,3 @@ class CheckProcessRestart < Sensu::Plugin::Check::CLI
     end
   end
 end
-
