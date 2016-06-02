@@ -13,7 +13,7 @@
 #             WARNING if 1 process requires a restart
 #
 # PLATFORMS:
-#   Linux (Debian based distributions)
+#   Linux
 #
 # DEPENDENCIES:
 #   gem: sensu-plugin
@@ -26,8 +26,9 @@
 #   check-process-restart.rb -w 2 -c 5
 #
 # NOTES:
-#   This will only work on Debian based distributions and requires the
-#   debian-goodies package.
+#   This will only work on Debian or Red Hat-based distributions.
+#   In the case of Debian-based distributions, the debian-goodies
+#   package will need to be installed.
 #
 #   Also make sure the user "sensu" can sudo without password
 #
@@ -55,6 +56,9 @@ class CheckProcessRestart < Sensu::Plugin::Check::CLI
   # Debian command to run
   CHECK_RESTART = '/usr/sbin/checkrestart'.freeze
 
+  # Red Hat command to run
+  NEEDS_RESTARTING = '/usr/bin/needs-restarting'.freeze
+
   # Set path for the checkrestart script
   #
   def initialize
@@ -66,6 +70,13 @@ class CheckProcessRestart < Sensu::Plugin::Check::CLI
   #
   def checkrestart?
     File.exist?('/etc/debian_version') && File.exist?(CHECK_RESTART)
+  end
+
+  # Check if we can run needs-restarting script
+  # @return [Boolean]
+  #
+  def needs_restarting?
+    File.exist?(NEEDS_RESTARTING)
   end
 
   # Run checkrestart and parse process(es) and pid(s)
@@ -92,21 +103,59 @@ class CheckProcessRestart < Sensu::Plugin::Check::CLI
     checkrestart_hash
   end
 
+  # Run needs-restarting and parse process(es) and pid(s)
+  # @return [Hash]
+  def run_needs_restarting
+    needs_restarting_hash = { found: '', pids: [] }
+
+    out = `sudo #{NEEDS_RESTARTING} 2>&1`
+    if $CHILD_STATUS.to_i != 0
+      needs_restarting_hash[:found] = "Failed to run needs-restarting: #{out}"
+    else
+      needs_restarting_hash[:found] = `sudo #{NEEDS_RESTARTING} | wc -l | tr -d "\n"`
+
+      out.lines do |l|
+        m = /(\d+)\s:\s(.*)$/.match(l)
+
+        if m
+          needs_restarting_hash[:pids] << { m[1] => m[2] }
+        end
+      end
+    end
+    needs_restarting_hash
+  end
+
   # Main run method for the check
   #
   def run
-    unless checkrestart?
-      unknown "Can't seem to find checkrestart. This check only works in a Debian based distribution and you need debian-goodies package installed"
-    end
+    if checkrestart?
+      checkrestart_out = run_checkrestart
 
-    checkrestart_out = run_checkrestart
-    if /^Failed/ =~ checkrestart_out[:found]
-      unknown checkrestart_out[:found]
+      if /^Failed/ =~ checkrestart_out[:found]
+        unknown checkrestart_out[:found]
+      end
+
+      message JSON.generate(checkrestart_out)
+      found = checkrestart_out[:found].to_i
+
+      warning if found >= config[:warn].to_i && found < config[:crit].to_i
+      critical if found >= config[:crit].to_i
+      ok
+    elsif needs_restarting?
+      needs_restarting_out = run_needs_restarting
+
+      if /^Failed/ =~ needs_restarting_out[:found]
+        unknown needs_restarting_out[:found]
+      end
+
+      message JSON.generate(needs_restarting_out)
+      found = needs_restarting_out[:found].to_i
+
+      warning if found >= config[:warn].to_i && found < config[:crit].to_i
+      critical if found >= config[:crit].to_i
+      ok
+    else
+      unknown "Can't seem to find either checkrestart or needs-restarting. For checkrestart, you will need to install the debian-goodies package."
     end
-    message JSON.generate(checkrestart_out)
-    found = checkrestart_out[:found].to_i
-    warning if found >= config[:warn].to_i && found < config[:crit].to_i
-    critical if found >= config[:crit].to_i
-    ok
   end
 end
