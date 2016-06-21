@@ -94,10 +94,14 @@ def find_pids_from_name(process_name):
   pids = []
   for pid in pids_in_proc:
     path = PROC_ROOT_DIR + pid
-    if 'comm' in os.listdir(path):
-      file_handler = open(path + '/comm', 'r')
-      if file_handler.read().rstrip() == process_name:
-        pids.append(int(pid))
+    try:
+        if 'comm' in os.listdir(path):
+          file_handler = open(path + '/comm', 'r')
+          if file_handler.read().rstrip() == process_name:
+            pids.append(int(pid))
+    except OSError, e:
+        if e.errno == 2:
+            pass
   return pids
 
 def stats_per_pid(pid):
