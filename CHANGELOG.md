@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachangelog.com/)
 
 ## [Unreleased]
+
+## [1.0.0] - 2016-06-21
 ### Fixed
 - metrics-per-process.py: avoid false alerts by adding exception handling for `OSError` errors
 - check-process.rb: avoid 'invalid byte sequence' messages by adding configurable encoding which defaults to `ASCII-8BIT`
@@ -101,7 +103,8 @@ This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachang
 - built against 1.9.3, 2.0, 2.1
 - cryptographically signed
 
-[unreleased]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/0.0.6...HEAD
+[unreleased]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/1.0.0...HEAD
+[1.0.0]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/0.0.6...1.0.0
 [0.0.6]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/0.0.5...0.0.6
 [0.0.5]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/0.0.4...0.0.5
 [0.0.4]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/0.0.3...0.0.4
