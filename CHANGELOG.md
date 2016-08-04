@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachangelog.com/)
 
 ## [Unreleased]
+### Fixed
+- check-process.rb: Flip the meaning of `-z`, `-r`, `-P` and `-T` to match what the help messages say they do.
 
 ## [1.0.0] - 2016-06-21
 ### Fixed
