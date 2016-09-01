@@ -7,6 +7,9 @@ This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachang
 ### Fixed
 - check-process.rb: Flip the meaning of `-z`, `-r`, `-P` and `-T` to match what the help messages say they do.
 
+### Added
+- check-process-restart.rb: Allow additional arguments to be passed to the underlying tool using `-a`.
+
 ## [1.0.0] - 2016-06-21
 ### Fixed
 - metrics-per-process.py: avoid false alerts by adding exception handling for `OSError` errors
