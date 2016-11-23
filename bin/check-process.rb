@@ -177,7 +177,7 @@ class CheckProcess < Sensu::Plugin::Check::CLI
     if File.exist?(path)
       File.read(path).strip.to_i
     else
-      unknown "Could not read pid file #{path}"
+      critical "Could not read pid file #{path}"
     end
   end
 
