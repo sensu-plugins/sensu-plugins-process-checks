@@ -8,7 +8,7 @@ This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachang
 - check-process.rb: Flip the meaning of `-z`, `-r`, `-P` and `-T` to match what the help messages say they do.
 
 ### Changed
-- check-process.rb: return CRITICAL if pid file is specified and does not exist
+- check-process.rb: return false on pid file failed read and let the configurable options to define check response
 
 ## [1.0.0] - 2016-06-21
 ### Fixed
