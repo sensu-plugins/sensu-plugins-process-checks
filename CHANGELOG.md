@@ -10,6 +10,9 @@ This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachang
 ### Changed
 - check-process.rb: return false on pid file failed read and let the configurable options to define check response
 
+### Added
+- check-process-restart.rb: Allow additional arguments to be passed to the underlying tool using `-a`.
+
 ## [1.0.0] - 2016-06-21
 ### Fixed
 - metrics-per-process.py: avoid false alerts by adding exception handling for `OSError` errors

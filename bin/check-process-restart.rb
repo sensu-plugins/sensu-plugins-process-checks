@@ -53,6 +53,11 @@ class CheckProcessRestart < Sensu::Plugin::Check::CLI
          description: 'the number of processes to need restart before critical',
          default: 2
 
+  option :args,
+         short: '-a ARGS',
+         description: 'arguments to pass to the checkrestart or needs-restarting tool. Quote flags like this: -a \'-p\'',
+         default: ''
+
   # Debian command to run
   CHECK_RESTART = '/usr/sbin/checkrestart'.freeze
 
@@ -84,8 +89,8 @@ class CheckProcessRestart < Sensu::Plugin::Check::CLI
   def run_checkrestart
     checkrestart_hash = { found: '', pids: [] }
 
-    out = `sudo #{CHECK_RESTART} 2>&1`
-    if $CHILD_STATUS.to_i != 0
+    out = `sudo #{CHECK_RESTART} #{config[:args]} 2>&1`
+    if $CHILD_STATUS.to_i.nonzero?
       checkrestart_hash[:found] = "Failed to run checkrestart: #{out}"
     else
       out.lines do |l|
@@ -108,11 +113,11 @@ class CheckProcessRestart < Sensu::Plugin::Check::CLI
   def run_needs_restarting
     needs_restarting_hash = { found: '', pids: [] }
 
-    out = `sudo #{NEEDS_RESTARTING} 2>&1`
-    if $CHILD_STATUS.to_i != 0
+    out = `sudo #{NEEDS_RESTARTING} #{config[:args]} 2>&1`
+    if $CHILD_STATUS.to_i.nonzero?
       needs_restarting_hash[:found] = "Failed to run needs-restarting: #{out}"
     else
-      needs_restarting_hash[:found] = `sudo #{NEEDS_RESTARTING} | wc -l | tr -d "\n"`
+      needs_restarting_hash[:found] = `sudo #{NEEDS_RESTARTING} #{config[:args]} | wc -l | tr -d "\n"`
 
       out.lines do |l|
         m = /(\d+)\s:\s(.*)$/.match(l)

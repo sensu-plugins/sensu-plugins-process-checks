@@ -146,7 +146,7 @@ class CheckProcess < Sensu::Plugin::Check::CLI
          short: '-e SECONDS',
          long: '--esec-over SECONDS',
          proc: proc(&:to_i),
-         description: 'Match processes that older that this, in SECONDS'
+         description: 'Match processes that are older than this, in SECONDS'
 
   option :esec_under,
          short: '-E SECONDS',
