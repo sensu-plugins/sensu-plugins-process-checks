@@ -8,7 +8,7 @@ This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachang
 - check-process.rb: Flip the meaning of `-z`, `-r`, `-P` and `-T` to match what the help messages say they do.
 
 ### Changed
-- check-process.rb: return false on pid file failed read and let the configurable options to define check response
+- check-process.rb: Added `-F` option to trigger a critical if pid file is specified but non-existent.
 
 ### Added
 - check-process-restart.rb: Allow additional arguments to be passed to the underlying tool using `-a`.

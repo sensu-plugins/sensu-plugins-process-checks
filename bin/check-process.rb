@@ -106,6 +106,11 @@ class CheckProcess < Sensu::Plugin::Check::CLI
          long: '--file-pid PID',
          description: 'Check against a specific PID'
 
+  option :file_pid_crit,
+         short: '-F',
+         long: '--file-pid-crit',
+         description: 'Trigger a critical if pid file is specified but non-existent'
+
   option :vsz,
          short: '-z VSZ',
          long: '--virtual-memory-size VSZ',
@@ -176,8 +181,10 @@ class CheckProcess < Sensu::Plugin::Check::CLI
   def read_pid(path)
     if File.exist?(path)
       File.read(path).strip.to_i
+    elsif config[:file_pid_crit].nil?
+      unknown "Could not read pid file #{path}"
     else
-      false
+      critical "Could not read pid file #{path}"
     end
   end
 
@@ -245,10 +252,8 @@ class CheckProcess < Sensu::Plugin::Check::CLI
   def run
     procs = acquire_procs
 
-    file_pid = nil
-    if config[:file_pid]
-      file_pid = read_pid(config[:file_pid])
-      procs.select! { |p| p[:pid].to_i == file_pid }
+    if config[:file_pid] && (file_pid = read_pid(config[:file_pid]))
+      procs.reject! { |p| p[:pid].to_i != file_pid }
     end
 
     procs.reject! { |p| p[:pid].to_i == $PROCESS_ID } unless config[:match_self]
@@ -278,8 +283,7 @@ class CheckProcess < Sensu::Plugin::Check::CLI
     msg += "; esec > #{config[:esec_over]}" if config[:esec_over]
     msg += "; csec < #{config[:cpu_under]}" if config[:cpu_under]
     msg += "; csec > #{config[:cpu_over]}" if config[:cpu_over]
-    msg += "; pid #{config[:file_pid]}" if file_pid
-    msg += "; Could not read pid file #{config[:file_pid]}" if file_pid == false
+    msg += "; pid #{config[:file_pid]}" if config[:file_pid]
 
     if config[:metric]
       # #YELLOW
