@@ -106,6 +106,11 @@ class CheckProcess < Sensu::Plugin::Check::CLI
          long: '--file-pid PID',
          description: 'Check against a specific PID'
 
+  option :file_pid_crit,
+         short: '-F',
+         long: '--file-pid-crit',
+         description: 'Trigger a critical if pid file is specified but non-existent'
+
   option :vsz,
          short: '-z VSZ',
          long: '--virtual-memory-size VSZ',
@@ -176,8 +181,10 @@ class CheckProcess < Sensu::Plugin::Check::CLI
   def read_pid(path)
     if File.exist?(path)
       File.read(path).strip.to_i
-    else
+    elsif config[:file_pid_crit].nil?
       unknown "Could not read pid file #{path}"
+    else
+      critical "Could not read pid file #{path}"
     end
   end
 
@@ -248,6 +255,7 @@ class CheckProcess < Sensu::Plugin::Check::CLI
     if config[:file_pid] && (file_pid = read_pid(config[:file_pid]))
       procs.reject! { |p| p[:pid].to_i != file_pid }
     end
+
     procs.reject! { |p| p[:pid].to_i == $PROCESS_ID } unless config[:match_self]
     procs.reject! { |p| p[:pid].to_i == Process.ppid } unless config[:match_parent]
     procs.reject! { |p| p[:command] =~ /#{config[:exclude_pat]}/ } if config[:exclude_pat]
