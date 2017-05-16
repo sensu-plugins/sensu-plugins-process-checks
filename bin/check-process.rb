@@ -123,9 +123,9 @@ class CheckProcess < Sensu::Plugin::Check::CLI
          description: 'Trigger on a Resident Set size is bigger than this',
          proc: proc(&:to_i)
 
-  option :pcpu,
-         short: '-P PCPU',
-         long: '--proportional-set-size PCPU',
+  option :cpu_utilization,
+         short: '-P xx',
+         long: '--cpu-utilization xx',
          description: 'Trigger on a Proportional Set Size is bigger than this',
          proc: proc(&:to_f)
 
@@ -228,7 +228,7 @@ class CheckProcess < Sensu::Plugin::Check::CLI
       end
     else
       read_lines('ps axwwo user,pid,vsz,rss,pcpu,nlwp,state,etime,time,command').drop(1).map do |line|
-        line_to_hash(line, :user, :pid, :vsz, :rss, :pcpu, :thcount, :state, :etime, :time, :command)
+        line_to_hash(line, :user, :pid, :vsz, :rss, :cpu, :thcount, :state, :etime, :time, :command)
       end
     end
   end
@@ -262,7 +262,7 @@ class CheckProcess < Sensu::Plugin::Check::CLI
     procs.reject! { |p| p[:command] !~ /#{config[:cmd_pat]}/ } if config[:cmd_pat]
     procs.select! { |p| p[:vsz].to_f > config[:vsz] } if config[:vsz]
     procs.select! { |p| p[:rss].to_f > config[:rss] } if config[:rss]
-    procs.select! { |p| p[:pcpu].to_f > config[:pcpu] } if config[:pcpu]
+    procs.select! { |p| p[:cpu].to_f > config[:cpu_utilization] } if config[:cpu_utilization]
     procs.select! { |p| p[:thcount].to_i > config[:thcount] } if config[:thcount]
     procs.reject! { |p| etime_to_esec(p[:etime]) >= config[:esec_under] } if config[:esec_under]
     procs.reject! { |p| etime_to_esec(p[:etime]) <= config[:esec_over] } if config[:esec_over]
@@ -277,7 +277,7 @@ class CheckProcess < Sensu::Plugin::Check::CLI
     msg += "; user #{config[:user].join(',')}" if config[:user]
     msg += "; vsz > #{config[:vsz]}" if config[:vsz]
     msg += "; rss > #{config[:rss]}" if config[:rss]
-    msg += "; pcpu > #{config[:pcpu]}" if config[:pcpu]
+    msg += "; cpu > #{config[:cpu_utilization]}" if config[:cpu_utilization]
     msg += "; thcount > #{config[:thcount]}" if config[:thcount]
     msg += "; esec < #{config[:esec_under]}" if config[:esec_under]
     msg += "; esec > #{config[:esec_over]}" if config[:esec_over]
