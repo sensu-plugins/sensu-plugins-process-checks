@@ -4,14 +4,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachangelog.com/)
 
 ## [Unreleased]
-### Fixed
-- check-process.rb: Flip the meaning of `-z`, `-r`, `-P` and `-T` to match what the help messages say they do.
+### Breaking Changes
+- check-process.rb: renamed `--propotional-set-size` to `--cpu-utilization` as that's really what it was. (@majormoses)
+- check-process.rb: Flip the meaning of `-z`, `-r`, `-P` and `-T` to match what the help messages say they do. (@maoe)
 
 ### Changed
-- check-process.rb: Added `-F` option to trigger a critical if pid file is specified but non-existent.
+- check-process.rb: Added `-F` option to trigger a critical if pid file is specified but non-existent. (@swibowo)
 
 ### Added
-- check-process-restart.rb: Allow additional arguments to be passed to the underlying tool using `-a`.
+- check-process-restart.rb: Allow additional arguments to be passed to the underlying tool using `-a`. (@tomduckering)
 
 ## [1.0.0] - 2016-06-21
 ### Fixed
