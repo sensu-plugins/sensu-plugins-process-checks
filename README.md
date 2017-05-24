@@ -17,9 +17,12 @@
  * bin/check-process-restart.rb
  * bin/check-process.rb
  * bin/check-threads-count.rb
+ * bin/metrics-per-process.py
+ * bin/metrics-per-process.rb
  * bin/metrics-process-status.rb
- * bin/metrics-processes-threads-count.rb
+ * bin/metrics-process-uptime.rb
  * bin/metrics-process-uptime.sh
+ * bin/metrics-processes-threads-count.rb
 
 ## Usage
 

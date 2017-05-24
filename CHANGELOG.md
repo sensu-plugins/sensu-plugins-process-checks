@@ -4,6 +4,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachangelog.com/)
 
 ## [Unreleased]
+
+### Added
+- metrics-per-process.rb: Binstub for metrics-per-process.py
+- metrics-process-uptime.rb: Binstub for metrics-process-uptime.sh
+
 ## [2.0.0] 2017-05-18
 ### Breaking Changes
 - check-process.rb: renamed `--propotional-set-size` to `--cpu-utilization` as that's really what it was. (@majormoses)
