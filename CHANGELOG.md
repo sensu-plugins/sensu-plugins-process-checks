@@ -4,6 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachangelog.com/)
 
 ## [Unreleased]
+### Changed
+- metrics-per-process.py: Use memory_info() in psutil versions greater than 4.0.0, as memory_info_ex() was deprecated.
+
 ## [2.2.0] - 2017-05-28
 ### Changed
 - metrics-per-process.py: Fallback to importing Counter from backport_collections for Python 2.6 support.
