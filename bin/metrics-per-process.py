@@ -11,7 +11,7 @@
 #   Linux
 #
 # DEPENDENCIES:
-#  Python 2.7+ (untested on Python3, should work though)
+#  Python 2.6+ (untested on Python3, should work though)
 #  Python module: psutil https://pypi.python.org/pypi/psutil
 #
 # USAGE:
@@ -68,8 +68,11 @@ import optparse
 import psutil
 import sys
 import time
-from collections import Counter
 
+try:
+  from collections import Counter
+except ImportError:
+  from backport_collections import Counter
 
 PROC_ROOT_DIR = '/proc/'
 TCP_CONN_STATUSES = [
@@ -221,4 +224,3 @@ def main():
 #
 if __name__ == '__main__':
   main()
-

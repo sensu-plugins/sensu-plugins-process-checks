@@ -4,6 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachangelog.com/)
 
 ## [Unreleased]
+### Changed
+- metrics-per-process.py: Fallback to importing Counter from backport_collections for Python 2.6 support.
+
 ## [2.1.0] - 2017-05-25
 ### Added
 - metrics-per-process.rb: Binstub for metrics-per-process.py
