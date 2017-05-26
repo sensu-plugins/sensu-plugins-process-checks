@@ -114,17 +114,21 @@ def stats_per_pid(pid):
 
   stats = {}
   process_handler = psutil.Process(pid)
+  if psutil.version_info < (4,0,0):
+    process_memory_info = process_handler.memory_info_ex()
+  else:
+    process_memory_info = process_handler.memory_info()
   stats['cpu.user'] = process_handler.cpu_times().user
   stats['cpu.system'] = process_handler.cpu_times().system
   stats['cpu.percent'] = process_handler.cpu_percent()
   stats['threads'] = process_handler.num_threads()
-  stats['memory.rss'] = process_handler.memory_info_ex().rss
-  stats['memory.vms'] = process_handler.memory_info_ex().vms
-  stats['memory.shared'] = process_handler.memory_info_ex().shared
-  stats['memory.text'] = process_handler.memory_info_ex().text
-  stats['memory.lib'] = process_handler.memory_info_ex().lib
-  stats['memory.data'] = process_handler.memory_info_ex().data
-  stats['memory.dirty'] = process_handler.memory_info_ex().dirty
+  stats['memory.rss'] = process_memory_info.rss
+  stats['memory.vms'] = process_memory_info.vms
+  stats['memory.shared'] = process_memory_info.shared
+  stats['memory.text'] = process_memory_info.text
+  stats['memory.lib'] = process_memory_info.lib
+  stats['memory.data'] = process_memory_info.data
+  stats['memory.dirty'] = process_memory_info.dirty
   stats['memory.percent'] = process_handler.memory_percent()
   stats['fds'] = process_handler.num_fds()
   stats['ctx_switches.voluntary'] = process_handler.num_ctx_switches().voluntary
