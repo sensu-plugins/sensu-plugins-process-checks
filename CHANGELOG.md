@@ -4,6 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachangelog.com/)
 
 ## [Unreleased]
+## [2.2.0] - 2017-05-28
 ### Changed
 - metrics-per-process.py: Fallback to importing Counter from backport_collections for Python 2.6 support.
 
@@ -121,8 +122,9 @@ This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachang
 - built against 1.9.3, 2.0, 2.1
 - cryptographically signed
 
-[unreleased]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/2.1.0...HEAD
-[2.0.0]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/2.0.0...2.1.0
+[unreleased]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/2.2.0...HEAD
+[2.2.0]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/2.1.0...2.2.0
+[2.1.0]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/2.0.0...2.1.0
 [2.0.0]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/1.0.0...2.0.0
 [1.0.0]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/0.0.6...1.0.0
 [0.0.6]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/0.0.5...0.0.6
