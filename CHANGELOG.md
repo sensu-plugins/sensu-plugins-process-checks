@@ -4,6 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachangelog.com/)
 
 ## [Unreleased]
+## [2.3.0] - 2017-05-29
 ### Changed
 - metrics-per-process.py: Use memory_info() in psutil versions greater than 4.0.0, as memory_info_ex() was deprecated.
 
@@ -125,7 +126,8 @@ This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachang
 - built against 1.9.3, 2.0, 2.1
 - cryptographically signed
 
-[unreleased]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/2.2.0...HEAD
+[unreleased]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/2.3.0...HEAD
+[2.3.0]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/2.2.0...2.3.0
 [2.2.0]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/2.1.0...2.2.0
 [2.1.0]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/2.0.0...2.1.0
 [2.0.0]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/1.0.0...2.0.0
