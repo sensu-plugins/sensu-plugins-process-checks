@@ -61,15 +61,13 @@ class CheckProcess < Sensu::Plugin::Check::CLI
          short: '-W N',
          long: '--warn-under N',
          description: 'Trigger a warning if under a number',
-         proc: proc(&:to_i),
-         default: 1
+         proc: proc(&:to_i)
 
   option :crit_under,
          short: '-C N',
          long: '--critical-under N',
          description: 'Trigger a critial if under a number',
-         proc: proc(&:to_i),
-         default: 1
+         proc: proc(&:to_i)
 
   option :metric,
          short: '-t METRIC',
