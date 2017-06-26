@@ -273,7 +273,7 @@ class CheckProcess < Sensu::Plugin::Check::CLI
     # Ensure RSS is over this value
     procs.select! { |p| p[:rss].to_f > config[:rss] } if config[:rss]
     # Ensure RSS is under this value
-    procs.select! { |p| p[:over_rss].to_f < config[:over_rss] } if config[:over_rss]
+    procs.select! { |p| p[:rss].to_f < config[:over_rss] } if config[:over_rss]
     procs.select! { |p| p[:cpu].to_f > config[:cpu_utilization] } if config[:cpu_utilization]
     procs.select! { |p| p[:thcount].to_i > config[:thcount] } if config[:thcount]
     procs.reject! { |p| etime_to_esec(p[:etime]) >= config[:esec_under] } if config[:esec_under]
