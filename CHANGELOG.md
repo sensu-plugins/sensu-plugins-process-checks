@@ -4,7 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachangelog.com/)
 
 ## [Unreleased]
-## Changed
+## Added
 - check-process.rb: added `-R` to allow checking for processes whose RSS exceeds some value
 
 ## [2.3.0] - 2017-05-29
