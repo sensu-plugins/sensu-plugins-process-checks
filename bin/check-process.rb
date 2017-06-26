@@ -117,9 +117,17 @@ class CheckProcess < Sensu::Plugin::Check::CLI
          description: 'Trigger on a Virtual Memory size is bigger than this',
          proc: proc(&:to_i)
 
+  # Alert if RSS is under this value
   option :rss,
          short: '-r RSS',
          long: '--resident-set-size RSS',
+         description: 'Trigger on a Resident Set size is smaller than this',
+         proc: proc(&:to_i)
+
+  # Alert if RSS is over this value
+  option :over_rss,
+         short: '-R RSS',
+         long: '--over-resident-set-size RSS',
          description: 'Trigger on a Resident Set size is bigger than this',
          proc: proc(&:to_i)
 
@@ -209,7 +217,7 @@ class CheckProcess < Sensu::Plugin::Check::CLI
   #
   def on_cygwin?
     # #YELLOW
-    `ps -W 2>&1`; $CHILD_STATUS.exitstatus == 0 # rubocop:disable Semicolon
+    `ps -W 2>&1`; $CHILD_STATUS.exitstatus.zero? # rubocop:disable Semicolon
   end
 
   # Acquire all the proceeses on a system for further analysis
@@ -249,6 +257,7 @@ class CheckProcess < Sensu::Plugin::Check::CLI
 
   # The main function
   #
+  # rubocop:disable Metrics/AbcSize
   def run
     procs = acquire_procs
 
@@ -261,7 +270,10 @@ class CheckProcess < Sensu::Plugin::Check::CLI
     procs.reject! { |p| p[:command] =~ /#{config[:exclude_pat]}/ } if config[:exclude_pat]
     procs.reject! { |p| p[:command] !~ /#{config[:cmd_pat]}/ } if config[:cmd_pat]
     procs.select! { |p| p[:vsz].to_f > config[:vsz] } if config[:vsz]
+    # Ensure RSS is over this value
     procs.select! { |p| p[:rss].to_f > config[:rss] } if config[:rss]
+    # Ensure RSS is under this value
+    procs.select! { |p| p[:rss].to_f < config[:over_rss] } if config[:over_rss]
     procs.select! { |p| p[:cpu].to_f > config[:cpu_utilization] } if config[:cpu_utilization]
     procs.select! { |p| p[:thcount].to_i > config[:thcount] } if config[:thcount]
     procs.reject! { |p| etime_to_esec(p[:etime]) >= config[:esec_under] } if config[:esec_under]
@@ -277,6 +289,7 @@ class CheckProcess < Sensu::Plugin::Check::CLI
     msg += "; user #{config[:user].join(',')}" if config[:user]
     msg += "; vsz > #{config[:vsz]}" if config[:vsz]
     msg += "; rss > #{config[:rss]}" if config[:rss]
+    msg += "; rss < #{config[:over_rss]}" if config[:over_rss]
     msg += "; cpu > #{config[:cpu_utilization]}" if config[:cpu_utilization]
     msg += "; thcount > #{config[:thcount]}" if config[:thcount]
     msg += "; esec < #{config[:esec_under]}" if config[:esec_under]
