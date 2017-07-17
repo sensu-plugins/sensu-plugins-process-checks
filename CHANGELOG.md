@@ -3,6 +3,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachangelog.com/)
 
+### Added
+- metric-processes-threads-count.rb: count processes by status (for Linux machines only)
+
 ## [Unreleased]
 ### Added
 - ruby 2.4 testing (@majormoses)

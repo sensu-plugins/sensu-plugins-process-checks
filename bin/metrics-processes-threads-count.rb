@@ -51,6 +51,13 @@ class ProcessesThreadsCount < Sensu::Plugin::Metric::CLI::Graphite
          boolean: true,
          default: false
 
+  option :statuses,
+         description: 'If specified, count each process number by status in addition to processes. Note: Requires sys-proctables > 0.9.5',
+         short: '-S',
+         long: '--statuses',
+         boolean: true,
+         default: false
+
   PROCTABLE_MSG = 'sys-proctable version newer than 0.9.5 is required for counting threads with -t or --threads'.freeze
 
   # Exit with an unknown if sys-proctable is not high enough to support counting threads.
@@ -86,9 +93,26 @@ class ProcessesThreadsCount < Sensu::Plugin::Metric::CLI::Graphite
     end
   end
 
+  # Takes a process struct from Sys::ProcTable.ps() as an argument
+  # Initialises a list of different Linux process statuses
+  # Tries to use the Linux proccess status :state field, returns the initializedl list if it fails
+  # Counts the processes by status and returns the hash
+  def count_processes_by_status(ps_table)
+    list_proc = {}
+    %w(S R D T t X Z).each do |v|
+      list_proc[v] = 0
+    end
+    if ps_table.first.respond_to?(:state)
+      ps_table.each do |pr|
+        list_proc[pr[:state]] += 1
+      end
+    end
+    list_proc
+  end
+
   # Main function
   def run
-    if config[:threads]
+    if config[:threads] || config[:statuses]
       unknown PROCTABLE_MSG unless check_proctable_version
     end
     ps_table = Sys::ProcTable.ps
@@ -99,6 +123,26 @@ class ProcessesThreadsCount < Sensu::Plugin::Metric::CLI::Graphite
     output "#{[config[:scheme], 'process_count'].join('.')} #{processes} #{timestamp}"
     if config[:threads]
       output "#{[config[:scheme], 'thread_count'].join('.')} #{threads} #{timestamp}"
+    end
+    if config[:statuses]
+      count_processes_by_status(ps_table).each do |type, proc_count|
+        case type
+        when 'S'
+          output "#{[config[:scheme], 'sleeping'].join('.')} #{proc_count} #{timestamp}"
+        when 'R'
+          output "#{[config[:scheme], 'running'].join('.')} #{proc_count} #{timestamp}"
+        when 'D'
+          output "#{[config[:scheme], 'ininterruptible_sleep'].join('.')} #{proc_count} #{timestamp}"
+        when 'T'
+          output "#{[config[:scheme], 'stopped'].join('.')} #{proc_count} #{timestamp}"
+        when 't'
+          output "#{[config[:scheme], 'stopped_by_debugger'].join('.')} #{proc_count} #{timestamp}"
+        when 'X'
+          output "#{[config[:scheme], 'dead'].join('.')} #{proc_count} #{timestamp}"
+        when 'Z'
+          output "#{[config[:scheme], 'zombie'].join('.')} #{proc_count} #{timestamp}"
+        end
+      end
     end
     ok
   end
