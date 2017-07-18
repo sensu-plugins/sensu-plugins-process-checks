@@ -5,6 +5,7 @@ require 'rspec/core/rake_task'
 require 'rubocop/rake_task'
 require 'yard'
 require 'yard/rake/yardoc_task'
+require 'English'
 
 args = [:spec, :make_bin_executable, :yard, :rubocop, :check_binstubs]
 

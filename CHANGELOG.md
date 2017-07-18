@@ -1,17 +1,22 @@
-#Change Log
+# Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachangelog.com/)
 
-### Added
-- metric-processes-threads-count.rb: count processes by status (for Linux machines only)
 
 ## [Unreleased]
+
+## [2.4.0] - 2017-07-18
 ### Added
 - ruby 2.4 testing (@majormoses)
+- metric-processes-threads-count.rb: count processes by status (for Linux machines only) (@alcasim)
 
 ### Changed
 - PR template fixes (@majormoses)
+
+### Fixed
+- misc changelog fixup (@majormoses)
+- fixed `rake check_binstubs` by requiging `English`
 
 ## [2.3.0] - 2017-05-29
 ### Changed
@@ -49,6 +54,9 @@ This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachang
 - Updated Rubocop to 0.40, applied auto-correct
 - Remove Ruby 1.9.3 support; add Ruby 2.3.0 support to test matrix
 
+## [0.1.0] - 2015-08-11
+### Added
+- Add metrics-per-process.py plugin (require python psutil module)
 
 ## [0.0.6] - 2015-08-24
 ### Fixed
@@ -61,15 +69,11 @@ This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachang
 ### Changed
 - rename process-uptime metrics.sh -> metrics-process-uptime.sh
 
-## [0.1.0] - 2015-08-11
-### Added
-- Add metrics-per-process.py plugin (require python psutil module)
-
 ## [0.0.4] - 2015-07-14
 ### Changed
 - updated sensu-plugin gem to 1.2.0
 
-## [0.0.3] - [2015-07-13]
+## [0.0.3] - 2015-07-13
 ### Fixed
 - issue #9: variable type conversion to_i in check-process-restart
 
@@ -86,7 +90,7 @@ This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachang
 ### Changed
 - removed cruft from /lib
 
-## 0.0.1 - [2015-05-01]
+## [0.0.1] - 2015-05-01
 ### Added
 - initial stable release
 
@@ -135,7 +139,8 @@ This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachang
 - built against 1.9.3, 2.0, 2.1
 - cryptographically signed
 
-[unreleased]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/2.3.0...HEAD
+[Unreleased]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/2.3.0...HEAD
+[2.4.0]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/2.3.0...
 [2.3.0]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/2.2.0...2.3.0
 [2.2.0]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/2.1.0...2.2.0
 [2.1.0]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/2.0.0...2.1.0
@@ -146,3 +151,4 @@ This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachang
 [0.0.4]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/0.0.3...0.0.4
 [0.0.3]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/0.0.2...0.0.3
 [0.0.2]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/0.0.1...0.0.2
+[0.0.1]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/4fd88a85f31d52c0f7145807365c911ea7f935c1...0.0.1
