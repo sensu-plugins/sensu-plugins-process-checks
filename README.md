@@ -26,6 +26,19 @@
 
 ## Usage
 
+### Installation
+
+    $ sensu-install process-checks
+
+### Example usage
+
+Check if an arbitrary process seems to be running (including more than one instance or not) or not running. Our arbitrary process in this example is called `rotgut`. Usage of `check-process.rb` would look something similar to the following:
+
+    /opt/sensu/embedded/bin/ruby /opt/sensu/embedded/bin/check-process.rb -p gutrot
+
+The `-p` argument is for a patter to match against the list of running processes
+reported by `ps axwwo`.
+
 ## Installation
 
 [Installation and Setup](http://sensu-plugins.io/docs/installation_instructions.html)
