@@ -26,16 +26,6 @@
 
 ## Usage
 
-### Installation
-
-    $ sensu-install process-checks
-
-On CentOS 7 the checks will be installed at:
-
-    /opt/sensu/embedded/bin/
-
-### Example usage
-
 Check if an arbitrary process seems to be running (including more than one instance or not) or not running. Our arbitrary process in this example is called `rotgut`. Usage of `check-process.rb` would look something similar to the following:
 
     $ /opt/sensu/embedded/bin/ruby /opt/sensu/embedded/bin/check-process.rb -p gutrot
@@ -64,5 +54,13 @@ Example configuration at `/etc/sensu/conf.d/check_gutrot_running.sh`:
 ## Installation
 
 [Installation and Setup](http://sensu-plugins.io/docs/installation_instructions.html)
+
+Quick install after following the steps above:
+
+    $ sensu-install process-checks
+
+On CentOS 7 the checks will be installed at:
+
+    /opt/sensu/embedded/bin/
 
 ## Notes
