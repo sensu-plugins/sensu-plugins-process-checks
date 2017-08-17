@@ -5,6 +5,8 @@ This CHANGELOG follows the format listed at [Keep A Changelog](http://keepachang
 
 
 ## [Unreleased]
+### Added
+- metric-per-processes.py: Add metrics filter (@rthouvenin)
 
 ## [2.4.0] - 2017-07-18
 ### Added

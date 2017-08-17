@@ -16,7 +16,7 @@
 #
 # USAGE:
 #
-#  metrics-per-process.py -n <process_name> | -p <path_to_process_pid_file> [-s <graphite_scheme>]
+#  metrics-per-process.py -n <process_name> | -p <path_to_process_pid_file> [-s <graphite_scheme>] [-m <metrics_regexp>]
 #
 # NOTES:
 # The plugin requires to read files in the /proc file system, make sure the owner
@@ -66,6 +66,7 @@
 import os
 import optparse
 import psutil
+import re
 import sys
 import time
 
@@ -89,6 +90,21 @@ TCP_CONN_STATUSES = [
 'CLOSING',
 'NONE'
 ]
+HANDLER_STATS = {
+  'cpu.user': lambda ctx: ctx.cpu_times().user,
+  'cpu.system': lambda ctx: ctx.cpu_times().system,
+  'cpu.percent': lambda ctx: ctx.cpu_percent(),
+  'threads': lambda ctx: ctx.num_threads(),
+  'memory.percent': lambda ctx: ctx.memory_percent(),
+  'fds': lambda ctx: ctx.num_fds(),
+  'ctx_switches.voluntary': lambda ctx: ctx.num_ctx_switches().voluntary,
+  'ctx_switches.involuntary': lambda ctx: ctx.num_ctx_switches().involuntary,
+  'io_counters.read_count': lambda ctx: ctx.io_counters().read_count,
+  'io_counters.write_count': lambda ctx: ctx.io_counters().write_count,
+  'io_counters.read_bytes': lambda ctx: ctx.io_counters().read_bytes,
+  'io_counters.write_bytes': lambda ctx: ctx.io_counters().write_bytes,
+}
+MEMORY_STATS = ['rss', 'vms', 'shared', 'text', 'lib', 'data', 'dirty']
 
 def find_pids_from_name(process_name):
   '''Find process PID from name using /proc/<pids>/comm'''
@@ -107,60 +123,63 @@ def find_pids_from_name(process_name):
             pass
   return pids
 
-def stats_per_pid(pid):
+def stats_per_pid(pid, metrics_regexp):
   '''Gets process stats using psutil module
 
+  Returns only the stats with a name that matches metrics_regexp
   details at http://pythonhosted.org/psutil/#process-class'''
 
   stats = {}
   process_handler = psutil.Process(pid)
+
+  for stat, getter in HANDLER_STATS.items():
+    if metrics_regexp.match(stat):
+      stats[stat] = getter(process_handler)
+
+  # Memory info
   if psutil.version_info < (4,0,0):
     process_memory_info = process_handler.memory_info_ex()
   else:
     process_memory_info = process_handler.memory_info()
-  stats['cpu.user'] = process_handler.cpu_times().user
-  stats['cpu.system'] = process_handler.cpu_times().system
-  stats['cpu.percent'] = process_handler.cpu_percent()
-  stats['threads'] = process_handler.num_threads()
-  stats['memory.rss'] = process_memory_info.rss
-  stats['memory.vms'] = process_memory_info.vms
-  stats['memory.shared'] = process_memory_info.shared
-  stats['memory.text'] = process_memory_info.text
-  stats['memory.lib'] = process_memory_info.lib
-  stats['memory.data'] = process_memory_info.data
-  stats['memory.dirty'] = process_memory_info.dirty
-  stats['memory.percent'] = process_handler.memory_percent()
-  stats['fds'] = process_handler.num_fds()
-  stats['ctx_switches.voluntary'] = process_handler.num_ctx_switches().voluntary
-  stats['ctx_switches.involuntary'] = process_handler.num_ctx_switches().involuntary
-  stats['io_counters.read_count'] = process_handler.io_counters().read_count
-  stats['io_counters.write_count'] = process_handler.io_counters().write_count
-  stats['io_counters.read_bytes'] = process_handler.io_counters().read_bytes
-  stats['io_counters.write_bytes'] = process_handler.io_counters().write_bytes
+  for stat in MEMORY_STATS:
+    if metrics_regexp.match(stat):
+      stats['memory.' + stat] = getattr(process_memory_info, stat)
+
   # TCP/UDP/Unix Socket Connections
-  tcp_conns = process_handler.connections(kind='tcp')
+  tcp_stats = ['total'] + [s.lower() for s in TCP_CONN_STATUSES]
+  tcp_conns = None
+  tcp_conns_count = {}
+  for stat in tcp_stats:
+    if metrics_regexp.match('conns.tcp.' + stat):
+      if tcp_conns is None:
+        tcp_conns = process_handler.connections(kind='tcp')
   if tcp_conns:
     stats['conns.tcp.total'] = len(tcp_conns)
-    tcp_conns_count = {}
     for tcp_status in TCP_CONN_STATUSES:
-      tcp_conns_count['conns.tcp.' + tcp_status.lower()] = 0
-      for conn in tcp_conns:
-        if conn.status == tcp_status:
-          tcp_conns_count['conns.tcp.' + tcp_status.lower()] = tcp_conns_count[
-              'conns.tcp.' + tcp_status.lower()] + 1
+      stat = 'conns.tcp.' + tcp_status.lower()
+      if metrics_regexp.match(stat):
+        tcp_conns_count[stat] = 0
+        for conn in tcp_conns:
+          if conn.status == tcp_status:
+            tcp_conns_count[stat] = tcp_conns_count[stat] + 1
     stats.update(tcp_conns_count)
-  udp_conns = process_handler.connections(kind='udp')
-  if udp_conns:
-    stats['conns.udp.total'] = len(udp_conns)
-  unix_conns = process_handler.connections(kind='unix')
-  if unix_conns:
-    stats['conns.unix_sockets.total'] = len(unix_conns)
+
+  if metrics_regexp.match('conns.udp.total'):
+    udp_conns = process_handler.connections(kind='udp')
+    if udp_conns:
+      stats['conns.udp.total'] = len(udp_conns)
+
+  if metrics_regexp.match('conns.unix_sockets.total'):
+    unix_conns = process_handler.connections(kind='unix')
+    if unix_conns:
+      stats['conns.unix_sockets.total'] = len(unix_conns)
+
   return stats
 
-def multi_pid_process_stats(pids):
+def multi_pid_process_stats(pids, metrics_regexp):
   stats = {'total_processes': len(pids)}
   for pid in pids:
-    stats = Counter(stats) + Counter(stats_per_pid(pid))
+    stats = Counter(stats) + Counter(stats_per_pid(pid, metrics_regexp))
   return stats
 
 def recursive_dict_sum(dictionnary):
@@ -208,6 +227,12 @@ def main():
     dest    = 'graphite_scheme',
     metavar = 'GRAPHITE_SCHEME')
 
+  parser.add_option('-m', '--metrics',
+    help    = 'regexp used to match the metrics name to collect, default to .*',
+    default = '.*',
+    dest    = 'metrics',
+    metavar = 'METRICS_REGEXP')
+
   (options, args) = parser.parse_args()
 
   if options.process_name and options.process_pid_file:
@@ -218,13 +243,15 @@ def main():
     print 'A process name or a process pid file path is needed'
     sys.exit(1)
 
+  options.metrics = re.compile(options.metrics)
+
   if options.process_name:
     pids = find_pids_from_name(options.process_name)
-    graphite_printer(multi_pid_process_stats(pids), options.graphite_scheme)
+    graphite_printer(multi_pid_process_stats(pids, options.metrics), options.graphite_scheme)
 
   if options.process_pid_file:
     pid = get_pid_from_pid_file(options.process_pid_file)
-    graphite_printer(stats_per_pid(pid), options.graphite_scheme)
+    graphite_printer(stats_per_pid(pid, options.metrics), options.graphite_scheme)
 #
 if __name__ == '__main__':
   main()
