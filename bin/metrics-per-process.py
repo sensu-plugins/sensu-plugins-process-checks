@@ -90,20 +90,6 @@ TCP_CONN_STATUSES = [
 'CLOSING',
 'NONE'
 ]
-HANDLER_STATS = {
-  'cpu.user': lambda ctx: ctx.cpu_times().user,
-  'cpu.system': lambda ctx: ctx.cpu_times().system,
-  'cpu.percent': lambda ctx: ctx.cpu_percent(),
-  'threads': lambda ctx: ctx.num_threads(),
-  'memory.percent': lambda ctx: ctx.memory_percent(),
-  'fds': lambda ctx: ctx.num_fds(),
-  'ctx_switches.voluntary': lambda ctx: ctx.num_ctx_switches().voluntary,
-  'ctx_switches.involuntary': lambda ctx: ctx.num_ctx_switches().involuntary,
-  'io_counters.read_count': lambda ctx: ctx.io_counters().read_count,
-  'io_counters.write_count': lambda ctx: ctx.io_counters().write_count,
-  'io_counters.read_bytes': lambda ctx: ctx.io_counters().read_bytes,
-  'io_counters.write_bytes': lambda ctx: ctx.io_counters().write_bytes,
-}
 MEMORY_STATS = ['rss', 'vms', 'shared', 'text', 'lib', 'data', 'dirty']
 
 def find_pids_from_name(process_name):
@@ -132,9 +118,41 @@ def stats_per_pid(pid, metrics_regexp):
   stats = {}
   process_handler = psutil.Process(pid)
 
-  for stat, getter in HANDLER_STATS.items():
-    if metrics_regexp.match(stat):
-      stats[stat] = getter(process_handler)
+  if metrics_regexp.match('cpu.user'): 
+    stats['cpu.user'] = process_handler.cpu_times().user
+
+  if metrics_regexp.match('cpu.system'): 
+    stats['cpu.system'] = process_handler.cpu_times().system
+
+  if metrics_regexp.match('cpu.percent'): 
+    stats['cpu.percent'] = process_handler.cpu_percent()
+
+  if metrics_regexp.match('threads'): 
+    stats['threads'] = process_handler.num_threads()
+
+  if metrics_regexp.match('memory.percent'): 
+    stats['memory.percent'] = process_handler.memory_percent()
+
+  if metrics_regexp.match('fds'): 
+    stats['fds'] = process_handler.num_fds()
+
+  if metrics_regexp.match('ctx_switches.voluntary'): 
+    stats['ctx_switches.voluntary'] = process_handler.num_ctx_switches().voluntary
+
+  if metrics_regexp.match('ctx_switches.involuntary'): 
+    stats['ctx_switches.involuntary'] = process_handler.num_ctx_switches().involuntary
+
+  if metrics_regexp.match('io_counters.read_count'): 
+    stats['io_counters.read_count'] = process_handler.io_counters().read_count
+
+  if metrics_regexp.match('io_counters.write_count'): 
+    stats['io_counters.write_count'] = process_handler.io_counters().write_count
+
+  if metrics_regexp.match('io_counters.read_bytes'): 
+    stats['io_counters.read_bytes'] = process_handler.io_counters().read_bytes
+
+  if metrics_regexp.match('io_counters.write_bytes'): 
+    stats['io_counters.write_bytes'] = process_handler.io_counters().write_bytes
 
   # Memory info
   if psutil.version_info < (4,0,0):
