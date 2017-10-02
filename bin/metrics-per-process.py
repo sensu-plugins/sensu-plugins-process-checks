@@ -109,7 +109,7 @@ def find_pids_from_name(process_name):
             pass
   return pids
 
-def other_stats(process_handler, metrics_regexp):
+def additional_stats(process_handler, metrics_regexp):
   stats = {}
 
   if metrics_regexp.match('cpu.user'): 
@@ -210,7 +210,7 @@ def stats_per_pid(pid, metrics_regexes):
   for metrics_regexp in metrics_regexes:
     stats.update(memory_stats(process_handler, metrics_regexp))
     stats.update(connection_stats(process_handler, metrics_regexp))
-    stats.update(other_stats(process_handler, metrics_regexp))
+    stats.update(additional_stats(process_handler, metrics_regexp))
 
   return stats
 
