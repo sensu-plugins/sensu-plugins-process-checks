@@ -5,6 +5,8 @@ This CHANGELOG follows the format listed [here](https://github.com/sensu-plugins
 
 
 ## [Unreleased]
+
+## [2.5.0] - 2017-10-04
 ### Added
 - metric-per-processes.py: Add metrics filter (@rthouvenin)
 
@@ -147,8 +149,9 @@ This CHANGELOG follows the format listed [here](https://github.com/sensu-plugins
 - built against 1.9.3, 2.0, 2.1
 - cryptographically signed
 
-[Unreleased]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/2.3.0...HEAD
-[2.4.0]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/2.3.0...
+[Unreleased]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/2.5.0...HEAD
+[2.5.0]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/2.4.0...2.5.0
+[2.4.0]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/2.3.0...2.4.0
 [2.3.0]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/2.2.0...2.3.0
 [2.2.0]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/2.1.0...2.2.0
 [2.1.0]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/2.0.0...2.1.0
