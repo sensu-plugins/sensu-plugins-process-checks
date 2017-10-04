@@ -16,7 +16,7 @@
 #
 # USAGE:
 #
-#  metrics-per-process.py -n <process_name> | -p <path_to_process_pid_file> [-s <graphite_scheme>]
+#  metrics-per-process.py -n <process_name> | -p <path_to_process_pid_file> [-s <graphite_scheme>] [-m <metrics_regexes>]
 #
 # NOTES:
 # The plugin requires to read files in the /proc file system, make sure the owner
@@ -66,6 +66,7 @@
 import os
 import optparse
 import psutil
+import re
 import sys
 import time
 
@@ -89,6 +90,7 @@ TCP_CONN_STATUSES = [
 'CLOSING',
 'NONE'
 ]
+MEMORY_STATS = ['rss', 'vms', 'shared', 'text', 'lib', 'data', 'dirty']
 
 def find_pids_from_name(process_name):
   '''Find process PID from name using /proc/<pids>/comm'''
@@ -107,60 +109,115 @@ def find_pids_from_name(process_name):
             pass
   return pids
 
-def stats_per_pid(pid):
-  '''Gets process stats using psutil module
-
-  details at http://pythonhosted.org/psutil/#process-class'''
-
+def additional_stats(process_handler, metrics_regexp):
   stats = {}
-  process_handler = psutil.Process(pid)
+
+  if metrics_regexp.match('cpu.user'): 
+    stats['cpu.user'] = process_handler.cpu_times().user
+
+  if metrics_regexp.match('cpu.system'): 
+    stats['cpu.system'] = process_handler.cpu_times().system
+
+  if metrics_regexp.match('cpu.percent'): 
+    stats['cpu.percent'] = process_handler.cpu_percent()
+
+  if metrics_regexp.match('threads'): 
+    stats['threads'] = process_handler.num_threads()
+
+  if metrics_regexp.match('memory.percent'): 
+    stats['memory.percent'] = process_handler.memory_percent()
+
+  if metrics_regexp.match('fds'): 
+    stats['fds'] = process_handler.num_fds()
+
+  if metrics_regexp.match('ctx_switches.voluntary'): 
+    stats['ctx_switches.voluntary'] = process_handler.num_ctx_switches().voluntary
+
+  if metrics_regexp.match('ctx_switches.involuntary'): 
+    stats['ctx_switches.involuntary'] = process_handler.num_ctx_switches().involuntary
+
+  if metrics_regexp.match('io_counters.read_count'): 
+    stats['io_counters.read_count'] = process_handler.io_counters().read_count
+
+  if metrics_regexp.match('io_counters.write_count'): 
+    stats['io_counters.write_count'] = process_handler.io_counters().write_count
+
+  if metrics_regexp.match('io_counters.read_bytes'): 
+    stats['io_counters.read_bytes'] = process_handler.io_counters().read_bytes
+
+  if metrics_regexp.match('io_counters.write_bytes'): 
+    stats['io_counters.write_bytes'] = process_handler.io_counters().write_bytes
+
+  return stats
+
+# Memory info
+def memory_stats(process_handler, metrics_regexp):
   if psutil.version_info < (4,0,0):
     process_memory_info = process_handler.memory_info_ex()
   else:
     process_memory_info = process_handler.memory_info()
-  stats['cpu.user'] = process_handler.cpu_times().user
-  stats['cpu.system'] = process_handler.cpu_times().system
-  stats['cpu.percent'] = process_handler.cpu_percent()
-  stats['threads'] = process_handler.num_threads()
-  stats['memory.rss'] = process_memory_info.rss
-  stats['memory.vms'] = process_memory_info.vms
-  stats['memory.shared'] = process_memory_info.shared
-  stats['memory.text'] = process_memory_info.text
-  stats['memory.lib'] = process_memory_info.lib
-  stats['memory.data'] = process_memory_info.data
-  stats['memory.dirty'] = process_memory_info.dirty
-  stats['memory.percent'] = process_handler.memory_percent()
-  stats['fds'] = process_handler.num_fds()
-  stats['ctx_switches.voluntary'] = process_handler.num_ctx_switches().voluntary
-  stats['ctx_switches.involuntary'] = process_handler.num_ctx_switches().involuntary
-  stats['io_counters.read_count'] = process_handler.io_counters().read_count
-  stats['io_counters.write_count'] = process_handler.io_counters().write_count
-  stats['io_counters.read_bytes'] = process_handler.io_counters().read_bytes
-  stats['io_counters.write_bytes'] = process_handler.io_counters().write_bytes
-  # TCP/UDP/Unix Socket Connections
-  tcp_conns = process_handler.connections(kind='tcp')
-  if tcp_conns:
-    stats['conns.tcp.total'] = len(tcp_conns)
-    tcp_conns_count = {}
-    for tcp_status in TCP_CONN_STATUSES:
-      tcp_conns_count['conns.tcp.' + tcp_status.lower()] = 0
-      for conn in tcp_conns:
-        if conn.status == tcp_status:
-          tcp_conns_count['conns.tcp.' + tcp_status.lower()] = tcp_conns_count[
-              'conns.tcp.' + tcp_status.lower()] + 1
-    stats.update(tcp_conns_count)
-  udp_conns = process_handler.connections(kind='udp')
-  if udp_conns:
-    stats['conns.udp.total'] = len(udp_conns)
-  unix_conns = process_handler.connections(kind='unix')
-  if unix_conns:
-    stats['conns.unix_sockets.total'] = len(unix_conns)
+
+  stats = {}
+  for stat in MEMORY_STATS:
+    if metrics_regexp.match('memory.' + stat):
+      stats['memory.' + stat] = getattr(process_memory_info, stat)
+
   return stats
 
-def multi_pid_process_stats(pids):
+# TCP/UDP/Unix Socket Connections
+def connection_stats(process_handler, metrics_regexp):
+  tcp_stats = ['total'] + [s.lower() for s in TCP_CONN_STATUSES]
+  tcp_conns = None
+  tcp_conns_count = {}
+  for stat in tcp_stats:
+    if metrics_regexp.match('conns.tcp.' + stat):
+      if tcp_conns is None:
+        tcp_conns = process_handler.connections(kind='tcp')
+
+  stats = {}
+  if tcp_conns:
+    stats['conns.tcp.total'] = len(tcp_conns)
+    for tcp_status in TCP_CONN_STATUSES:
+      stat = 'conns.tcp.' + tcp_status.lower()
+      if metrics_regexp.match(stat):
+        tcp_conns_count[stat] = 0
+        for conn in tcp_conns:
+          if conn.status == tcp_status:
+            tcp_conns_count[stat] = tcp_conns_count[stat] + 1
+    stats.update(tcp_conns_count)
+
+  if metrics_regexp.match('conns.udp.total'):
+    udp_conns = process_handler.connections(kind='udp')
+    if udp_conns:
+      stats['conns.udp.total'] = len(udp_conns)
+
+  if metrics_regexp.match('conns.unix_sockets.total'):
+    unix_conns = process_handler.connections(kind='unix')
+    if unix_conns:
+      stats['conns.unix_sockets.total'] = len(unix_conns)
+
+  return stats
+
+def stats_per_pid(pid, metrics_regexes):
+  '''Gets process stats using psutil module
+
+  Returns only the stats with a name that matches one of the metrics_regexes
+  details at http://pythonhosted.org/psutil/#process-class'''
+
+  stats = {}
+  process_handler = psutil.Process(pid)
+
+  for metrics_regexp in metrics_regexes:
+    stats.update(memory_stats(process_handler, metrics_regexp))
+    stats.update(connection_stats(process_handler, metrics_regexp))
+    stats.update(additional_stats(process_handler, metrics_regexp))
+
+  return stats
+
+def multi_pid_process_stats(pids, metrics_regexes):
   stats = {'total_processes': len(pids)}
   for pid in pids:
-    stats = Counter(stats) + Counter(stats_per_pid(pid))
+    stats = Counter(stats) + Counter(stats_per_pid(pid, metrics_regexes))
   return stats
 
 def recursive_dict_sum(dictionnary):
@@ -208,6 +265,12 @@ def main():
     dest    = 'graphite_scheme',
     metavar = 'GRAPHITE_SCHEME')
 
+  parser.add_option('-m', '--metrics-regexes',
+    help    = 'comma-separated list of regexes used to match the metric names to collect, default to .*',
+    default = '.*',
+    dest    = 'metrics_regexes',
+    metavar = 'METRICS_REGEXES')
+
   (options, args) = parser.parse_args()
 
   if options.process_name and options.process_pid_file:
@@ -218,13 +281,15 @@ def main():
     print 'A process name or a process pid file path is needed'
     sys.exit(1)
 
+  options.metrics_regexes = [re.compile(regex) for regex in options.metrics_regexes.split(',')]
+
   if options.process_name:
     pids = find_pids_from_name(options.process_name)
-    graphite_printer(multi_pid_process_stats(pids), options.graphite_scheme)
+    graphite_printer(multi_pid_process_stats(pids, options.metrics_regexes), options.graphite_scheme)
 
   if options.process_pid_file:
     pid = get_pid_from_pid_file(options.process_pid_file)
-    graphite_printer(stats_per_pid(pid), options.graphite_scheme)
+    graphite_printer(stats_per_pid(pid, options.metrics_regexes), options.graphite_scheme)
 #
 if __name__ == '__main__':
   main()
