@@ -52,14 +52,6 @@ describe ThreadsCount, 'count_threads' do
 end
 
 describe ThreadsCount, 'run' do
-  it 'returns unknown if check_proctable_version returns false' do
-    threadscount = ThreadsCount.new
-    allow(threadscount).to receive(:count_threads).and_return(0)
-    allow(threadscount).to receive(:check_proctable_version).and_return(false)
-    expect(threadscount).to receive(:unknown)
-    threadscount.run
-  end
-
   it 'returns critical if count_threads returns more than the critical threshold' do
     threadscount = ThreadsCount.new
     threadscount.config[:warn] = 10

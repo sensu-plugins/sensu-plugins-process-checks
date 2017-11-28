@@ -48,18 +48,6 @@ describe ProcessesThreadsCount, 'count_threads' do
 end
 
 describe ThreadsCount, 'run' do
-  it 'returns unknown if check_proctable_version returns false and config[:threads] is true' do
-    nlwp_entry = Struct.new(:thread_count)
-    table = [nlwp_entry.new(3), nlwp_entry.new(1), nlwp_entry.new(6)]
-    allow(Sys::ProcTable).to receive(:ps).and_return(table)
-    ptcount = ProcessesThreadsCount.new
-    ptcount.config[:threads] = true
-    allow(ptcount).to receive(:count_threads).and_return(0)
-    allow(ptcount).to receive(:check_proctable_version).and_return(false)
-    expect(ptcount).to receive(:unknown)
-    expect(-> { ptcount.run }).to raise_error SystemExit
-  end
-
   it 'does not return unknown if check_proctable_version returns false and config[:threads] is false' do
     nlwp_entry = Struct.new(:thread_count)
     table = [nlwp_entry.new(3), nlwp_entry.new(1), nlwp_entry.new(6)]

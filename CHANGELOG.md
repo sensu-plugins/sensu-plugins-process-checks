@@ -6,6 +6,12 @@ This CHANGELOG follows the format listed [here](https://github.com/sensu-plugins
 
 ## [Unreleased]
 
+### Changed
+- bump and loosen dependency of `sys-proctable` (@majormoses)
+
+### Removed
+- check-threads-count.rb, metrics-processes-threads-count.rb: checks on `sys-proctable` versions as we now require new enough versions. (@majormoses)
+
 ## [2.5.0] - 2017-10-04
 ### Added
 - metric-per-processes.py: Add metrics filter (@rthouvenin)
