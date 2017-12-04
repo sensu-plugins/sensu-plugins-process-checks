@@ -7,7 +7,7 @@ This CHANGELOG follows the format listed [here](https://github.com/sensu-plugins
 ## [Unreleased]
 
 ### Changed
-- bump and loosen dependency of `sys-proctable` (@majormoses)
+- loosen dependency of `sys-proctable` (@majormoses)
 
 ### Removed
 - check-threads-count.rb, metrics-processes-threads-count.rb: checks on `sys-proctable` versions as we now require new enough versions. (@majormoses)
