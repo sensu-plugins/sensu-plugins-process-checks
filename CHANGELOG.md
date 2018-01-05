@@ -5,6 +5,8 @@ This CHANGELOG follows the format listed [here](https://github.com/sensu-plugins
 
 
 ## [Unreleased]
+### Changed
+- metrics-per-processes.py: Add option to find processes by username (@rthouvenin)
 
 ## [2.6.0] - 2017-12-05
 ### Changed

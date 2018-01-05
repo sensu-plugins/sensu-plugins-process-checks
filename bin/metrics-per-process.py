@@ -16,7 +16,7 @@
 #
 # USAGE:
 #
-#  metrics-per-process.py -n <process_name> | -p <path_to_process_pid_file> [-s <graphite_scheme>] [-m <metrics_regexes>]
+#  metrics-per-process.py -n <process_name> | -p <path_to_process_pid_file> | -u <username> [-s <graphite_scheme>] [-m <metrics_regexes>]
 #
 # NOTES:
 # The plugin requires to read files in the /proc file system, make sure the owner
@@ -66,6 +66,7 @@
 import os
 import optparse
 import psutil
+import pwd
 import re
 import sys
 import time
@@ -92,22 +93,45 @@ TCP_CONN_STATUSES = [
 ]
 MEMORY_STATS = ['rss', 'vms', 'shared', 'text', 'lib', 'data', 'dirty']
 
-def find_pids_from_name(process_name):
-  '''Find process PID from name using /proc/<pids>/comm'''
+def find_pids(matcher):
+  '''Find process PID using /proc/<pids> with given matcher'''
 
   pids_in_proc = [ pid for pid in os.listdir(PROC_ROOT_DIR) if pid.isdigit() ]
   pids = []
   for pid in pids_in_proc:
     path = PROC_ROOT_DIR + pid
     try:
-        if 'comm' in os.listdir(path):
-          file_handler = open(path + '/comm', 'r')
-          if file_handler.read().rstrip() == process_name:
-            pids.append(int(pid))
+      if matcher(path):
+        pids.append(int(pid))
     except OSError, e:
-        if e.errno == 2:
-            pass
+      if e.errno == 2:
+        pass
   return pids
+
+def find_pids_from_name(process_name):
+  '''Find process PID from name using /proc/<pids>/comm'''
+
+  def matcher(path):
+    if 'comm' in os.listdir(path):
+      file_handler = open(path + '/comm', 'r')
+      return file_handler.read().rstrip() == process_name
+
+  return find_pids(matcher)
+
+def find_pids_from_user(username):
+  '''Find process PID from username using ownership of /proc/<pids>'''
+
+  try:
+    user = pwd.getpwnam(username)
+    uid = user.pw_uid
+  except KeyError:
+    return []
+
+  def matcher(path):
+    stat = os.stat(path)
+    return stat.st_uid == uid
+
+  return find_pids(matcher)
 
 def additional_stats(process_handler, metrics_regexp):
   stats = {}
@@ -250,14 +274,19 @@ def main():
   parser = optparse.OptionParser()
 
   parser.add_option('-n', '--process-name',
-    help    = 'name of process to collect stats (imcompatible with -p)',
+    help    = 'name of process to collect stats (imcompatible with -p or -u)',
     dest    = 'process_name',
     metavar = 'PROCESS_NAME')
 
   parser.add_option('-p', '--pid-file',
-    help    = 'path to pid file for process to collect stats (imcompatible with -n)',
+    help    = 'path to pid file for process to collect stats (imcompatible with -n or -u)',
     dest    = 'process_pid_file',
     metavar = 'PROCESS_PID_FILE')
+
+  parser.add_option('-u', '--user',
+    help    = 'username of user running the process to collect stats (incompatible with -n or -p)',
+    dest    = 'username',
+    metavar = 'USERNAME')
 
   parser.add_option('-s', '--graphite_scheme',
     help    = 'graphite scheme to prepend, default to <process_stats>',
@@ -272,19 +301,25 @@ def main():
     metavar = 'METRICS_REGEXES')
 
   (options, args) = parser.parse_args()
+  options_list = [options.process_name, options.process_pid_file, options.username]
+  options_count = len(filter(lambda x: x is not None, options_list))
 
-  if options.process_name and options.process_pid_file:
-    print 'Specify a process name or a process pid file path, but not both'
+  if options_count > 1:
+    print 'Specify a process name or a process pid file path or username, but only one of them'
     sys.exit(1)
 
-  if not options.process_name and not options.process_pid_file:
-    print 'A process name or a process pid file path is needed'
+  if options_count == 0:
+    print 'A process name or a process pid file path or username is needed'
     sys.exit(1)
 
   options.metrics_regexes = [re.compile(regex) for regex in options.metrics_regexes.split(',')]
 
   if options.process_name:
     pids = find_pids_from_name(options.process_name)
+    graphite_printer(multi_pid_process_stats(pids, options.metrics_regexes), options.graphite_scheme)
+
+  if options.username:
+    pids = find_pids_from_user(options.username)
     graphite_printer(multi_pid_process_stats(pids, options.metrics_regexes), options.graphite_scheme)
 
   if options.process_pid_file:
