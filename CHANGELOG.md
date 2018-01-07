@@ -5,6 +5,8 @@ This CHANGELOG follows the format listed [here](https://github.com/sensu-plugins
 
 
 ## [Unreleased]
+
+## [2.7.0] - 2018-01-06
 ### Changed
 - metrics-per-processes.py: Add option to find processes by username (@rthouvenin)
 
@@ -158,7 +160,8 @@ This CHANGELOG follows the format listed [here](https://github.com/sensu-plugins
 - built against 1.9.3, 2.0, 2.1
 - cryptographically signed
 
-[Unreleased]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/2.6.0...HEAD
+[Unreleased]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/2.7.0...HEAD
+[2.7.0]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/2.6.0...2.7.0
 [2.6.0]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/2.5.0...2.6.0
 [2.5.0]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/2.4.0...2.5.0
 [2.4.0]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/2.3.0...2.4.0
