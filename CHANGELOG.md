@@ -5,6 +5,11 @@ This CHANGELOG follows the format listed [here](https://github.com/sensu-plugins
 
 
 ## [Unreleased]
+### Added
+- check-cmd.rb: added `--echo_stdout` which allows grabbing the processes stdout (@lahdekorpi)
+
+### Changed
+- check-cmd.rb: refactored enhancing the response output into a helper function to reduce branch complexity and other misc rubocop appeasing (@majormoses)
 
 ## [2.7.0] - 2018-01-06
 ### Changed
