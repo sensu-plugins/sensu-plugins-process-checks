@@ -1,5 +1,4 @@
 #! /usr/bin/env ruby
-#  encoding: UTF-8
 #
 #   proc-status-metrics
 #
@@ -92,7 +91,7 @@ class ProcStatus < Sensu::Plugin::Metric::CLI::Graphite
   #
   def acquire_valid_pids(pgrep_output)
     res = pgrep_output.split("\n").map(&:strip)
-    pids = res.reject { |x| !x.integer? }
+    pids = res.select(&:integer?)
     pids
   end
 

@@ -3,7 +3,7 @@
 #Author: Abhishek Jain<abhi111jain@gmail.com
 
 #This script greps for a process if the process name is specified or looks for the pid file in case the path to the pid file is specified.
-#If the grep is successful in the former case or the pid file is present with a valid running state in the latter case, a value of 1 is 
+#If the grep is successful in the former case or the pid file is present with a valid running state in the latter case, a value of 1 is
 #associated with the metric (<metric_name> <metric value> <timestamp>) format and outputted otherwise a value of 0 is emitted with the same format.
 #The metric name is constructed based on the scheme prefix specified. If not specified, the hostname is picked as the metric scheme and the metric
 #name is <hostname>.<process_name>.<uptime>

@@ -1,5 +1,4 @@
 #! /usr/bin/env ruby
-# encoding: UTF-8
 #
 # check-process
 #
@@ -209,7 +208,7 @@ class CheckProcess < Sensu::Plugin::Check::CLI
   #
   def on_cygwin?
     # #YELLOW
-    `ps -W 2>&1`; $CHILD_STATUS.exitstatus == 0 # rubocop:disable Semicolon
+    `ps -W 2>&1`; $CHILD_STATUS.zero? # rubocop:disable Semicolon
   end
 
   # Acquire all the proceeses on a system for further analysis
@@ -253,13 +252,13 @@ class CheckProcess < Sensu::Plugin::Check::CLI
     procs = acquire_procs
 
     if config[:file_pid] && (file_pid = read_pid(config[:file_pid]))
-      procs.reject! { |p| p[:pid].to_i != file_pid }
+      procs.select! { |p| p[:pid].to_i == file_pid }
     end
 
     procs.reject! { |p| p[:pid].to_i == $PROCESS_ID } unless config[:match_self]
     procs.reject! { |p| p[:pid].to_i == Process.ppid } unless config[:match_parent]
     procs.reject! { |p| p[:command] =~ /#{config[:exclude_pat]}/ } if config[:exclude_pat]
-    procs.reject! { |p| p[:command] !~ /#{config[:cmd_pat]}/ } if config[:cmd_pat]
+    procs.select! { |p| p[:command] =~ /#{config[:cmd_pat]}/ } if config[:cmd_pat]
     procs.select! { |p| p[:vsz].to_f > config[:vsz] } if config[:vsz]
     procs.select! { |p| p[:rss].to_f > config[:rss] } if config[:rss]
     procs.select! { |p| p[:cpu].to_f > config[:cpu_utilization] } if config[:cpu_utilization]
@@ -268,8 +267,8 @@ class CheckProcess < Sensu::Plugin::Check::CLI
     procs.reject! { |p| etime_to_esec(p[:etime]) <= config[:esec_over] } if config[:esec_over]
     procs.reject! { |p| cputime_to_csec(p[:time]) >= config[:cpu_under] } if config[:cpu_under]
     procs.reject! { |p| cputime_to_csec(p[:time]) <= config[:cpu_over] } if config[:cpu_over]
-    procs.reject! { |p| !config[:state].include?(p[:state]) } if config[:state]
-    procs.reject! { |p| !config[:user].include?(p[:user]) } if config[:user]
+    procs.select! { |p| config[:state].include?(p[:state]) } if config[:state]
+    procs.select! { |p| config[:user].include?(p[:user]) } if config[:user]
 
     msg = "Found #{procs.size} matching processes"
     msg += "; cmd /#{config[:cmd_pat]}/" if config[:cmd_pat]
@@ -287,7 +286,7 @@ class CheckProcess < Sensu::Plugin::Check::CLI
 
     if config[:metric]
       # #YELLOW
-      count = procs.map { |p| p[config[:metric]].to_i }.reduce { |a, b| a + b } # rubocop:disable SingleLineBlockParams
+      count = procs.map { |p| p[config[:metric]].to_i }.reduce { |a, b| a + b }
       msg += "; #{config[:metric]} == #{count}"
     else
       count = procs.size
