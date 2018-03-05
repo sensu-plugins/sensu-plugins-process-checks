@@ -6,6 +6,15 @@ This CHANGELOG follows the format listed [here](https://github.com/sensu-plugins
 
 ## [Unreleased]
 
+### Security
+- updated rubocop dependency to `~> 0.51.0` per: https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-8418. (@majormoses)
+
+### Breaking Changes
+- removed ruby `< 2.1` support (@majormoses)
+
+### Changed
+- appeased the cops (@majormoses)
+
 ## [2.7.0] - 2018-01-06
 ### Changed
 - metrics-per-processes.py: Add option to find processes by username (@rthouvenin)

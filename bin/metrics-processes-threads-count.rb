@@ -62,7 +62,7 @@ class ProcessesThreadsCount < Sensu::Plugin::Metric::CLI::Graphite
   # See the comments on get_process_threads() for why 1 is returned.
   def test_int(i)
     return Integer(i)
-  rescue
+  rescue StandardError
     return 1
   end
 
@@ -71,12 +71,12 @@ class ProcessesThreadsCount < Sensu::Plugin::Metric::CLI::Graphite
   # Returns the number of processes in those fields.
   # Otherwise, returns 1 as all processes are assumed to have at least one thread.
   def get_process_threads(p)
-    if p.respond_to?(:nlwp) # rubocop:disable Style/GuardClause
-      return test_int(p.nlwp)
+    if p.respond_to?(:nlwp)
+      test_int(p.nlwp)
     elsif p.respond_to?(:thread_count)
-      return test_int(p.thread_count)
+      test_int(p.thread_count)
     else
-      return 1
+      1
     end
   end
 
@@ -92,7 +92,7 @@ class ProcessesThreadsCount < Sensu::Plugin::Metric::CLI::Graphite
   # Counts the processes by status and returns the hash
   def count_processes_by_status(ps_table)
     list_proc = {}
-    %w(S R D T t X Z).each do |v|
+    %w[S R D T t X Z].each do |v|
       list_proc[v] = 0
     end
     if ps_table.first.respond_to?(:state)

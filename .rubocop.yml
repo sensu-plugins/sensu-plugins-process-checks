@@ -28,3 +28,9 @@ RegexpLiteral:
 
 Style/Documentation:
   Enabled: false
+
+# testing
+Metrics/BlockLength:
+  Enabled: true
+  Exclude:
+    - 'test/**/*'

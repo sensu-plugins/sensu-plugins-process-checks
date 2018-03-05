@@ -51,9 +51,13 @@ class ThreadsCount < Sensu::Plugin::Check::CLI
   # Takes a value to be tested as an integer. If a new Integer instance cannot be created from it, return 1.
   # See the comments on get_process_threads() for why 1 is returned.
   def test_int(i)
-    return Integer(i)
-  rescue
-    return 1
+    Integer(i)
+  rescue TypeError
+    1
+  rescue ArgumentError
+    1
+  rescue StandardError
+    1
   end
 
   # Takes a process struct from Sys::ProcTable.ps() as an argument
@@ -61,12 +65,12 @@ class ThreadsCount < Sensu::Plugin::Check::CLI
   # Returns the number of processes in those fields.
   # Otherwise, returns 1 as all processes are assumed to have at least one thread.
   def get_process_threads(p)
-    if p.respond_to?(:nlwp) # rubocop:disable Style/GuardClause
-      return test_int(p.nlwp)
+    if p.respond_to?(:nlwp)
+      test_int(p.nlwp)
     elsif p.respond_to?(:thread_count)
-      return test_int(p.thread_count)
+      test_int(p.thread_count)
     else
-      return 1
+      1
     end
   end
 
