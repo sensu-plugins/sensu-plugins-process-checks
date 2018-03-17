@@ -6,6 +6,7 @@ This CHANGELOG follows the format listed [here](https://github.com/sensu-plugins
 
 ## [Unreleased]
 
+## [3.0.0] - 2018-03-17
 ### Security
 - updated rubocop dependency to `~> 0.51.0` per: https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-8418. (@majormoses)
 
@@ -169,7 +170,8 @@ This CHANGELOG follows the format listed [here](https://github.com/sensu-plugins
 - built against 1.9.3, 2.0, 2.1
 - cryptographically signed
 
-[Unreleased]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/2.7.0...HEAD
+[Unreleased]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/3.0.0...HEAD
+[3.0.0]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/2.7.0...3.0.0
 [2.7.0]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/2.6.0...2.7.0
 [2.6.0]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/2.5.0...2.6.0
 [2.5.0]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/2.4.0...2.5.0
