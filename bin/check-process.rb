@@ -208,7 +208,7 @@ class CheckProcess < Sensu::Plugin::Check::CLI
   #
   def on_cygwin?
     # #YELLOW
-    `ps -W 2>&1`; $CHILD_STATUS.zero? # rubocop:disable Semicolon
+    `ps -W 2>&1`; $CHILD_STATUS.exitstatus.zero? # rubocop:disable Semicolon
   end
 
   # Acquire all the proceeses on a system for further analysis
