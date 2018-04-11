@@ -5,6 +5,9 @@ This CHANGELOG follows the format listed [here](https://github.com/sensu-plugins
 
 
 ## [Unreleased]
+### Added
+- metrics-ipcs.rb: Add ipcs metrics (@yuri-zubov sponsored by Actility, https://www.actility.com)
+
 
 ## [3.0.2] - 2018-03-27
 ### Security
