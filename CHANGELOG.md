@@ -5,9 +5,10 @@ This CHANGELOG follows the format listed [here](https://github.com/sensu-plugins
 
 
 ## [Unreleased]
+
+## [3.1.0] - 2018-05-02
 ### Added
 - metrics-ipcs.rb: Add ipcs metrics (@yuri-zubov sponsored by Actility, https://www.actility.com)
-
 
 ## [3.0.2] - 2018-03-27
 ### Security
@@ -181,7 +182,8 @@ This CHANGELOG follows the format listed [here](https://github.com/sensu-plugins
 - built against 1.9.3, 2.0, 2.1
 - cryptographically signed
 
-[Unreleased]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/3.0.2...HEAD
+[Unreleased]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/3.1.0...HEAD
+[3.1.0]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/3.0.2...3.1.0
 [3.0.2]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/3.0.1...3.0.2
 [3.0.1]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/3.0.0...3.0.1
 [3.0.0]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/2.7.0...3.0.0
