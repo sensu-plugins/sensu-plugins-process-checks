@@ -58,6 +58,13 @@ class ProcessesThreadsCount < Sensu::Plugin::Metric::CLI::Graphite
          boolean: true,
          default: false
 
+  option :idle_state,
+         description: 'If specified, count TASK_IDLE (I) state in separate .idle metric.  Note: TASK_IDLE is only available on Linux Kernels 4.14 and higher',
+         short: '-I',
+         long: '--idle-state',
+         boolean: true,
+         default: false
+
   # Takes a value to be tested as an integer. If a new Integer instance cannot be created from it, return 1.
   # See the comments on get_process_threads() for why 1 is returned.
   def test_int(i)
@@ -95,9 +102,14 @@ class ProcessesThreadsCount < Sensu::Plugin::Metric::CLI::Graphite
     %w[S R D T t X Z].each do |v|
       list_proc[v] = 0
     end
+    list_proc['I'] = 0 if config[:idle_state]
     if ps_table.first.respond_to?(:state)
       ps_table.each do |pr|
-        list_proc[pr[:state]] += 1
+        state = pr[:state]
+        if state == 'I'
+          state = 'D' unless config[:idle_state]
+        end
+        list_proc[state] += 1
       end
     end
     list_proc
@@ -131,6 +143,8 @@ class ProcessesThreadsCount < Sensu::Plugin::Metric::CLI::Graphite
           output "#{[config[:scheme], 'dead'].join('.')} #{proc_count} #{timestamp}"
         when 'Z'
           output "#{[config[:scheme], 'zombie'].join('.')} #{proc_count} #{timestamp}"
+        when 'I'
+          output "#{[config[:scheme], 'idle'].join('.')} #{proc_count} #{timestamp}"
         end
       end
     end

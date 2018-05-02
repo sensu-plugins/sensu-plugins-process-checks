@@ -45,6 +45,30 @@ describe ProcessesThreadsCount, 'count_threads' do
     ptcount = ProcessesThreadsCount.new
     expect(ptcount.count_threads(table)).to eq(10)
   end
+
+  it 'should be able to count processes in each state - count I toward D for 4.14+ kernels' do
+    states = %w[S R D T t X Z I]
+    ps_entry = Struct.new(:state)
+    table = states.map { |state| ps_entry.new(state) }
+    ptcount = ProcessesThreadsCount.new
+    counts = ptcount.count_processes_by_status(table)
+    states.each do |state|
+      expect(counts[state]).to eq(2) if state == 'D'
+      expect(counts[state]).to be_nil if state == 'I'
+    end
+  end
+
+  it 'should be able to count processes in each state with :idle_state enabled - count I separate' do
+    states = %w[S R D T t X Z I]
+    ps_entry = Struct.new(:state)
+    table = states.map { |state| ps_entry.new(state) }
+    ptcount = ProcessesThreadsCount.new
+    ptcount.config[:idle_state] = true
+    counts = ptcount.count_processes_by_status(table)
+    states.each do |state|
+      expect(counts[state]).to eq(1)
+    end
+  end
 end
 
 describe ThreadsCount, 'run' do

@@ -5,6 +5,12 @@ This CHANGELOG follows the format listed [here](https://github.com/sensu-plugins
 
 
 ## [Unreleased]
+### Fixed
+- metrics-processes-threads-count.rb:  Backward compatible support for TASK_IDLE process state in Linux 4.14+ (@awangptc)
+
+### Added
+- metrics-processes-threads-count.rb:  Add option to separate out TASK_IDLE process into it's own metric (@awangptc)
+
 
 ## [3.1.0] - 2018-05-02
 ### Added
