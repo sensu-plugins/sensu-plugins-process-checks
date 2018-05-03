@@ -5,6 +5,8 @@ This CHANGELOG follows the format listed [here](https://github.com/sensu-plugins
 
 
 ## [Unreleased]
+
+## [3.2.0] - 2018-05-02
 ### Fixed
 - metrics-processes-threads-count.rb:  Backward compatible support for TASK_IDLE process state in Linux 4.14+ (@awangptc)
 
@@ -188,7 +190,8 @@ This CHANGELOG follows the format listed [here](https://github.com/sensu-plugins
 - built against 1.9.3, 2.0, 2.1
 - cryptographically signed
 
-[Unreleased]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/3.1.0...HEAD
+[Unreleased]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/3.2.0...HEAD
+[3.2.0]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/3.1.0...3.2.0
 [3.1.0]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/3.0.2...3.1.0
 [3.0.2]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/3.0.1...3.0.2
 [3.0.1]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/3.0.0...3.0.1
