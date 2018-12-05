@@ -32,7 +32,7 @@ Gem::Specification.new do |s| # rubocop: disable Metrics/BlockLength
   s.version                = SensuPluginsProcessChecks::Version::VER_STRING
 
   s.add_runtime_dependency 'english', '0.6.3'
-  s.add_runtime_dependency 'sensu-plugin', '~> 1.2'
+  s.add_runtime_dependency 'sensu-plugin', '>= 1.2', '< 4.0'
   s.add_runtime_dependency 'sys-proctable', '~> 0.9.8'
 
   s.add_development_dependency 'bundler',                   '~> 1.7'
