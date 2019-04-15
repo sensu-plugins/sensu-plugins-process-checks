@@ -60,6 +60,7 @@ class MetricsIPCS < Sensu::Plugin::Metric::CLI::Graphite
         result = line.match(/[[:space:]]*(?<name>[a-zA-Z ]*).*(?<value>\d+)/)
         output "#{config[:scheme]}.#{key}.#{result[:name].strip.tr(' ', '-')}", result[:value].strip
       end
+      found = true
     end
     if found
       ok
