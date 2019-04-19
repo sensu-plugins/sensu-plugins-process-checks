@@ -33,7 +33,7 @@ Gem::Specification.new do |s| # rubocop: disable Metrics/BlockLength
 
   s.add_runtime_dependency 'english', '0.7.0'
   s.add_runtime_dependency 'sensu-plugin', '~> 4.0'
-  s.add_runtime_dependency 'sys-proctable', '~> 0.9.8'
+  s.add_runtime_dependency 'sys-proctable', '>= 0.9.8', '< 1.3.0'
 
   s.add_development_dependency 'bundler',                   '~> 2.1'
   s.add_development_dependency 'github-markup',             '~> 3.0'
