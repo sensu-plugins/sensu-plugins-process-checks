@@ -6,6 +6,10 @@ This CHANGELOG follows the format listed [here](https://github.com/sensu-plugins
 
 ## [Unreleased]
 
+## [4.0.1] - 2019-05-06
+### Fixed
+- metrics-ipcs.rb: fixed metric script by setting `found = true` when its found (@eberkut)
+
 ## [4.0.0] - 2019-04-18
 ### Breaking Changes
 - Update minimum required ruby version to 2.3. Drop unsupported ruby versions.
@@ -200,7 +204,8 @@ This CHANGELOG follows the format listed [here](https://github.com/sensu-plugins
 - built against 1.9.3, 2.0, 2.1
 - cryptographically signed
 
-[Unreleased]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/4.0.0...HEAD
+[Unreleased]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/4.0.1...HEAD
+[4.0.1]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/4.0.0...4.0.1
 [4.0.0]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/3.2.0...4.0.0
 [3.2.0]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/3.1.0...3.2.0
 [3.1.0]: https://github.com/sensu-plugins/sensu-plugins-process-checks/compare/3.0.2...3.1.0
