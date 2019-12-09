@@ -6,6 +6,9 @@ This CHANGELOG follows the format listed [here](https://github.com/sensu-plugins
 
 ## [Unreleased]
 
+### Added
+- Updated asset build targets to support centos6
+
 ## [4.0.1] - 2019-05-06
 ### Fixed
 - metrics-ipcs.rb: fixed metric script by setting `found = true` when its found (@eberkut)
