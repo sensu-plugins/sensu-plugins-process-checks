@@ -49,24 +49,43 @@ class CheckCmdStatus < Sensu::Plugin::Check::CLI
          short: '-o',
          long: '--check_output REGEX'
 
+  option :echo_stdout,
+         description: 'Output the stdout of the command',
+         short: '-e',
+         long: '--echo_stdout',
+         boolean: true,
+         default: false
+
   # Acquire the exit code and/or output of a command and alert if it is not
   # what is expected.
   #
   def acquire_cmd_status
     stdout = `#{config[:command]}`
     # #YELLOW
-    unless $CHILD_STATUS.exitstatus.to_s == config[:status] # rubocop:disable UnlessElse
-      critical "#{config[:command]} exited with #{$CHILD_STATUS.exitstatus}"
+    if $CHILD_STATUS.exitstatus.to_s == config[:status]
+      check_cmd_output(stdout)
     else
-      if config[:check_output]
-        if Regexp.new(config[:check_output]).match(stdout)
-          ok "#{config[:command]} matched #{config[:check_output]} and exited with #{$CHILD_STATUS.exitstatus}"
-        else
-          critical "#{config[:command]} output didn't match #{config[:check_output]} (exit #{$CHILD_STATUS.exitstatus})"
-        end
+      status = "#{config[:command]} exited with #{$CHILD_STATUS.exitstatus}"
+      status += "\nOutput: #{stdout}" if config[:echo_stdout]
+      critical status
+    end
+  end
+
+  def check_cmd_output(stdout)
+    if config[:check_output]
+      if Regexp.new(config[:check_output]).match(stdout)
+        status = "#{config[:command]} matched #{config[:check_output]} and exited with #{$CHILD_STATUS.exitstatus}"
+        status += "\nOutput: #{stdout}" if config[:echo_stdout]
+        ok status
       else
-        ok "#{config[:command]} exited with #{$CHILD_STATUS.exitstatus}"
+        status = "#{config[:command]} output didn't match #{config[:check_output]} (exit #{$CHILD_STATUS.exitstatus})"
+        status += "\nOutput: #{stdout}" if config[:echo_stdout]
+        critical status
       end
+    else
+      status = "#{config[:command]} exited with #{$CHILD_STATUS.exitstatus}"
+      status += "\nOutput: #{stdout}" if config[:echo_stdout]
+      ok status
     end
   end
 
