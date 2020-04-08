@@ -5,7 +5,9 @@ This CHANGELOG follows the format listed [here](https://github.com/sensu-plugins
 
 
 ## [Unreleased]
-
+## [4.2.0] - 2020-04-08
+### Changed
+- Updated english gem runtime dependency from 0.6.3 to 0.7.0 (0.6.3 was yanked).
 
 ## [4.1.0] - 2019-12-12
 ### Added
