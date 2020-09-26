@@ -13,6 +13,10 @@ This CHANGELOG follows the format listed [here](https://github.com/sensu-plugins
 ### Added
 - Updated asset build targets to support centos6
 
+## [4.0.2] - 2019-11-11
+### Fixed
+- .bonsai.yml: fixed wrong(not matching) entity.system.platform filter. (@itachi17)
+
 ## [4.0.1] - 2019-05-06
 ### Fixed
 - metrics-ipcs.rb: fixed metric script by setting `found = true` when its found (@eberkut)
